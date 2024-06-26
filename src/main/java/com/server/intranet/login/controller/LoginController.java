@@ -1,7 +1,11 @@
 package com.server.intranet.login.controller;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+@SpringBootApplication
 public class LoginController {
 
-    //hi트
+    public static void main(String args[]){
+        System.out.println("test");
+    }
 
 }
