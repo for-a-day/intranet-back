@@ -2,7 +2,7 @@ package com.server.intranet.calendar.entity;
 
 import java.util.Date;
 
-import com.server.intranet.login.entity.DepartmentEntity;
+import com.server.intranet.resource.entity.DepartmentEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
