@@ -24,7 +24,7 @@ public class FranchiseeServiceImpl implements FranchiseeService{
                 .map(fran -> new FranchiseeResponsetDto(
                         fran.getFranchiseeId(),
                         fran.getEmployee_id(), // EmployeeEntity 객체
-                        fran.getEmployee_id().getNAME(), // 사원 이름
+                        fran.getEmployee_id().getName(), // 사원 이름
                         fran.getFranchiseeName(),
                         fran.getOwner(),
                         fran.getAddress(),
