@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class EmployeeEntity {
 
-    //아이디
+    //사원 아이디
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EMPLOYEE_ID")
