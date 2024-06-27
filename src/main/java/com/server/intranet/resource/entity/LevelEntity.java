@@ -4,12 +4,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Builder
+@Data
 @Table(name = "LEVEL")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,8 +15,8 @@ public class LevelEntity {
 
     @Id
     @Column(name = "LEVEL_CODE", nullable = false, unique = true)
-    private String LEVEL_CODE;
+    private String levelCode;
 
     @Column(name = "LEVEL_NAME", nullable = false)
-    private String LEVEL_NAME;
+    private String levelName;
 }

@@ -2,7 +2,7 @@ package com.server.intranet.menu.entity;
 
 import java.util.Set;
 
-import com.server.intranet.order.entity.OrderEntity;
+import com.server.intranet.menu.entity.MenuEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
