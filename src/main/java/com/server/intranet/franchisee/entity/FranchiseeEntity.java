@@ -1,11 +1,8 @@
 package com.server.intranet.franchisee.entity;
 
 import java.sql.Date;
-import java.util.Set;
 
 import com.server.intranet.resource.entity.EmployeeEntity;
-import com.server.intranet.sales.entity.SalesEntity;
-import com.server.intranet.warning.entity.WarningEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -2,7 +2,7 @@ package com.server.intranet.franchisee.dto;
 
 import java.sql.Date;
 
-import com.server.intranet.resource.entity.EmployeeEntity;
+import com.server.intranet.login.entity.EmployeeEntity;
 
 import lombok.NonNull;
 import lombok.Getter;
