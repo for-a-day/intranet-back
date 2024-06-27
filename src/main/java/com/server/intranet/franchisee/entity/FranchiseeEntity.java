@@ -2,7 +2,7 @@ package com.server.intranet.franchisee.entity;
 
 import java.sql.Date;
 
-import com.server.intranet.resource.entity.EmployeeEntity;
+import com.server.intranet.resource.entity.EmployeeEntity; 
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
