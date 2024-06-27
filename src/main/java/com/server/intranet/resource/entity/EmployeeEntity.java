@@ -1,4 +1,4 @@
-package com.server.intranet.login.entity;
+package com.server.intranet.resource.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class EmployeeEntity {
 
-    //사원 아이디
+    //아이디
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EMPLOYEE_ID")
