@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.server.intranet.calendar.dto.CalendarCreateRequestDTO;
 import com.server.intranet.calendar.dto.CalendarListResponseDTO;
+import com.server.intranet.calendar.dto.CalendarUpdateRequestDTO;
 import com.server.intranet.calendar.entity.CalendarEntity;
 import com.server.intranet.calendar.repository.CalendarRepository;
 import com.server.intranet.calendar.service.CalendarService;
@@ -50,4 +51,27 @@ public class CalendarServiceImpl implements CalendarService {
 				return ListDTO;
 		}).collect(Collectors.toList());
 	}
+	
+	
+	@Override
+	public Integer updateCalendar(Long calendarId, CalendarUpdateRequestDTO updateRequestDTO) {
+		CalendarEntity calendar = calendarRepository.findById(calendarId)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid calendar ID"));
+		DepartmentEntity department = departmentRepository.findById(updateRequestDTO.getDepartmentCode())
+				.orElseThrow(() -> new IllegalArgumentException("Invalid  department Code"));
+		
+		calendar.setCALENDAR_NAME(updateRequestDTO.getCalendarName());
+		calendar.setDepartment(department);
+		
+		calendarRepository.save(calendar);
+		return calendar.getCALENDAR_ID().intValue();
+	}
+	
+	@Override
+	public void deleteCalendar(Long calendarId) {
+		CalendarEntity calendar = calendarRepository.findById(calendarId)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid calendar ID"));
+		calendarRepository.delete(calendar);
+	}
+	
 }

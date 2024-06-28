@@ -1,5 +1,6 @@
 package com.server.intranet.schedule.entity;
 
+import java.sql.Time;
 import java.util.Date;
 
 import com.server.intranet.calendar.entity.CalendarEntity;
@@ -53,6 +54,12 @@ public class ScheduleEntity {
 	// 종료일
 	@Column(name = "END_DATE")
 	private Date END_DATE;
+	
+	@Column(name = "START_TIME")
+	private Time START_TIME;
+	
+	@Column(name = "END_TIME")
+	private Time END_TIME;
 	
 	// 장소
 	@Column(name = "LOCATION")
