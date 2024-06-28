@@ -31,7 +31,7 @@ public class EmployeeEntity {
 
     //생년월일
     @Column(name = "BIRTH", nullable = false)
-    private Date birth;
+    private Long birth;
 
     //입사날짜
     @Column(name = "DATE_EMPLOYMENT", nullable = false)

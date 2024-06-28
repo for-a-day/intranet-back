@@ -8,14 +8,14 @@ import lombok.*;
 
 @Entity
 @Data
-@Table(name = "EMPLOYEE_LEVEL")
+@Table(name = "LEVEL")
 @AllArgsConstructor
 @NoArgsConstructor
 public class LevelEntity {
 
     @Id
-    @Column(name = "LEVEL_CODE")
-    private Long levelCode;
+    @Column(name = "LEVEL_CODE", nullable = false, unique = true)
+    private String levelCode;
 
     @Column(name = "LEVEL_NAME", nullable = false)
     private String levelName;
