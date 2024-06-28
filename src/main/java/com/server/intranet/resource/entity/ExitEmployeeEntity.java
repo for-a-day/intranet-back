@@ -7,19 +7,15 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "EMPLOYEE")
+@Table(name = "EXIT_EMPLOYEE")
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeEntity {
+public class ExitEmployeeEntity {
 
     //아이디
     @Id
     @Column(name = "EMPLOYEE_ID")
     private Long employeeId;
-
-    //패스워드
-    @Column(name = "EMPLOYEE_PASSWORD", nullable = false)
-    private String employeePassword;
 
     //이름
     @Column(name = "NAME", nullable = false)
@@ -41,27 +37,20 @@ public class EmployeeEntity {
     @Column(name = "CONTACT", nullable = false)
     private String contact;
 
-    //주소
-    @Column(name = "ADDRESS", nullable = false)
-    private String address;
-
     //이메일주소
     @Column(name = "EMAIL_ADDRESS", unique = true, nullable = false)
     private String emailAddress;
 
-    //재직여부
-    @Column(name = "EMPLOYMENT_STATUS", nullable = false)
-    private String employmentStatus;
+    @Column(name = "LEVEL_NAME", nullable = false)
+    private String levelName;
 
-    @ManyToOne
-    @JoinColumn(name = "LEVEL_CODE")
-    private LevelEntity level;
+    @Column(name = "DEPARTMENT_NAME", nullable = false)
+    private String departmentName;
 
-    @ManyToOne
-    @JoinColumn(name = "DEPARTMENT_CODE")
-    private DepartmentEntity department;
+    @Column(name = "DATE_RETIREMENT" , nullable = false)
+    private Date dateRetirement;
 
-    @ManyToOne
-    @JoinColumn(name = "AUTHORITY_CODE")
-    private AuthorityEntity authority;
+    @Column(name = "REASON_RETIREMENT", nullable = false)
+    private String reasonRetirement;
+
 }
