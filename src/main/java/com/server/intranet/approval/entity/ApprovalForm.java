@@ -33,8 +33,15 @@ public class ApprovalForm {
     @Column(name = "FORM_ID")
     private Long formId;
 
+    @ManyToOne
+    @JoinColumn(name = "STORAGE_ID")
+    private Storage storageId;
+
     @Column(name = "SUBJECT", nullable = false)
     private String subject;
+
+    @Column(name = "CONTENT", nullable = false, length = 65535)
+    private String content;
 
     @Column(name = "STATUS")
     private String status;
@@ -47,9 +54,6 @@ public class ApprovalForm {
 
     @Column(name = "PRE_APPROVAL")
     private String preApproval;
-
-    @Column(name = "STORAGE")
-    private String storage;
 
     @CreatedDate
     @Column(name = "CREATION_DATE")
