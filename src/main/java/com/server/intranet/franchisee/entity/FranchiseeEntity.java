@@ -59,11 +59,5 @@ public class FranchiseeEntity {
 	
 	@Column(name = "warning_count", nullable = true) //경고 횟수
 	private int warningCount;
-	
-//	//cascade = CascadeType.ALL 은 고민을 해보자..
-//	@OneToMany(mappedBy = "franchisee")
-//	private Set<WarningEntity> warning;
-//	
-//	@OneToMany(mappedBy = "franchise") 
-//	private Set<SalesEntity> sales;
+
 }
