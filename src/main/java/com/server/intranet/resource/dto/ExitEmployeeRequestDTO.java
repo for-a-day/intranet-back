@@ -1,23 +1,37 @@
 package com.server.intranet.resource.dto;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Date;
 
 @Getter
 @Setter
-public class ResourceResponseDTO {
+@ToString
+public class ExitEmployeeRequestDTO {
+
     private Long employeeId;
+
     private String name;
+
     private String gender;
+
     private Date birth;
+
     private Date dateEmployment;
+
     private String contact;
-    private String address;
+
     private String emailAddress;
-    private String employmentStatus;
-    private String level;
-    private String department;
-    private String authority;
+
+    private String levelName;
+
+    private String departmentName;
+
+    private Date dateRetirement;
+
+    private String reasonRetirement;
 }
