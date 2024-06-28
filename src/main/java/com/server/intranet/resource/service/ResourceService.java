@@ -1,4 +1,4 @@
 package com.server.intranet.resource.service;
 
-public interface ResourceService {
+public class ResourceService {
 }
