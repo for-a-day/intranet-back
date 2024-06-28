@@ -3,7 +3,6 @@ package com.server.intranet.schedule.entity;
 import java.util.Date;
 
 import com.server.intranet.calendar.entity.CalendarEntity;
-import com.server.intranet.login.entity.DepartmentEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

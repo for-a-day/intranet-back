@@ -1,14 +1,12 @@
-package com.server.intranet.login.entity;
+package com.server.intranet.resource.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
 @Entity
-@Builder
+@Data
 @Table(name = "EMPLOYEE")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,45 +14,44 @@ public class EmployeeEntity {
 
     //아이디
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EMPLOYEE_ID")
-    private Long EMPLOYEE_ID;
+    private Long employeeId;
 
     //패스워드
     @Column(name = "EMPLOYEE_PASSWORD", nullable = false)
-    private String EMPLOYEE_PASSWORD;
+    private String employeePassword;
 
     //이름
     @Column(name = "NAME", nullable = false)
-    private String NAME;
+    private String name;
 
     //성별
     @Column(name = "GENDER", nullable = false)
-    private String GENDER;
+    private String gender;
 
     //생년월일
     @Column(name = "BIRTH", nullable = false)
-    private Long BIRTH;
+    private Long birth;
 
     //입사날짜
     @Column(name = "DATE_EMPLOYMENT", nullable = false)
-    private Date DATE_EMPLOYMENT;
+    private Date dateEmployment;
 
     //연락처
     @Column(name = "CONTACT", nullable = false)
-    private String CONTACT;
+    private String contact;
 
     //주소
     @Column(name = "ADDRESS", nullable = false)
-    private String ADDRESS;
+    private String address;
 
     //이메일주소
     @Column(name = "EMAIL_ADDRESS", unique = true, nullable = false)
-    private String EMAIL_ADDRESS;
+    private String emailAddress;
 
     //재직여부
     @Column(name = "EMPLOYMENT_STATUS", nullable = false)
-    private String EMPLOYMENT_STATUS;
+    private String employmentStatus;
 
     @ManyToOne
     @JoinColumn(name = "LEVEL_CODE")
