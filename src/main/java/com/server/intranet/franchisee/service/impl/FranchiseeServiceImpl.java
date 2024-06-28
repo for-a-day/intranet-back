@@ -1,23 +1,33 @@
 package com.server.intranet.franchisee.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.server.intranet.franchisee.dto.FranchiseeRequestDto;
 import com.server.intranet.franchisee.dto.FranchiseeResponsetDto;
+import com.server.intranet.franchisee.entity.FranchiseeEntity;
 import com.server.intranet.franchisee.repository.FranchiseeRepository;
 import com.server.intranet.franchisee.service.FranchiseeService;
+import com.server.intranet.resource.entity.EmployeeEntity;
+import com.server.intranet.resource.repository.ResourceRepository;
 
 @Service
 public class FranchiseeServiceImpl implements FranchiseeService{
 	
 	private final FranchiseeRepository franchiseeRepository;
+	private final ResourceRepository resourceRepository;
 	
-	private FranchiseeServiceImpl(FranchiseeRepository franchiseeRepository) {
-		this.franchiseeRepository = franchiseeRepository;
-	}
-
+    @Autowired
+    public FranchiseeServiceImpl(FranchiseeRepository franchiseeRepository, ResourceRepository resourceRepository) {
+        this.franchiseeRepository = franchiseeRepository;
+        this.resourceRepository = resourceRepository;
+    }
+	
+	// 목록
 	@Override
     public List<FranchiseeResponsetDto> franList() {
         return franchiseeRepository.findAll().stream()
@@ -35,6 +45,70 @@ public class FranchiseeServiceImpl implements FranchiseeService{
                 ))
                 .collect(Collectors.toList());
     }
+
 	
+	// 아이디 찾기
+	@Override
+	public FranchiseeEntity findId(String franshiseeId) {
+		Optional<FranchiseeEntity> optional = franchiseeRepository.findById(franshiseeId);
+		return optional.orElse(null);
+	}
 	
+	// 수정 기능
+	@Override
+	public FranchiseeEntity edit(FranchiseeRequestDto dto) throws Exception {
+        // EmployeeEntity를 찾고, Long 타입으로 변환합니다.
+        EmployeeEntity employee = resourceRepository.findById(Long.parseLong(dto.getEmployeeId()))
+                .orElseThrow(() -> new Exception("Employee not found"));
+
+        // FranchiseeEntity로 변환
+        FranchiseeEntity franchisee = new FranchiseeEntity();
+        franchisee.setFranchiseeId(dto.getFranchiseeId());
+        franchisee.setEmployee_id(employee); // setEmployee_id로 수정
+        franchisee.setFranchiseeName(dto.getFranchiseeName());
+        franchisee.setOwner(dto.getOwner());
+        franchisee.setAddress(dto.getAddress());
+        franchisee.setPhoneNumber(dto.getPhoneNumber());
+        franchisee.setContractDate(dto.getContractDate());
+        franchisee.setExpirationDate(dto.getExpirationDate());
+        franchisee.setWarningCount(dto.getWarningCount());
+
+        // 업데이트
+        return franchiseeRepository.save(franchisee);
+    }
+	
+	// 삭제 기능
+	@Override
+	public FranchiseeEntity delete(String franchiseeId) {
+		// 1. api 가지고 온다
+		// 2. 폐점 DB 갱신 (insert)
+		// 3. 경고 DB : 폐점 아이디 update (수정)
+		// 4. 경고 DB : 가맹점 아이디 set null (수정)
+		// 5. 가맹점 DB : 해당 api와 관련된 데이터 삭제 
+		return null;
+	}
+	
+	// 등록
+	@Override
+	public FranchiseeEntity insert(FranchiseeRequestDto dto) throws Exception{
+        // EmployeeEntity를 찾고, Long 타입으로 변환합니다.
+        EmployeeEntity employee = resourceRepository.findById(Long.parseLong(dto.getEmployeeId()))
+                .orElseThrow(() -> new Exception("Employee not found"));
+
+        // FranchiseeEntity로 변환
+        FranchiseeEntity franchisee = new FranchiseeEntity();
+        franchisee.setFranchiseeId(dto.getFranchiseeId());
+        franchisee.setEmployee_id(employee); // setEmployee_id로 수정
+        franchisee.setFranchiseeName(dto.getFranchiseeName());
+        franchisee.setOwner(dto.getOwner());
+        franchisee.setAddress(dto.getAddress());
+        franchisee.setPhoneNumber(dto.getPhoneNumber());
+        franchisee.setContractDate(dto.getContractDate());
+        franchisee.setExpirationDate(dto.getExpirationDate());
+        franchisee.setWarningCount(dto.getWarningCount());
+
+        // 업데이트
+        return franchiseeRepository.save(franchisee);
+	}
+
 }
