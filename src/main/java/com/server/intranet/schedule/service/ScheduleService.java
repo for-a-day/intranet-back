@@ -7,5 +7,5 @@ import com.server.intranet.schedule.dto.ScheduleListResponseDTO;
 
 public interface ScheduleService {
 	public void createSchedule(ScheduleCreateRequestDTO createRequestDTO);
-	public List<ScheduleListResponseDTO> listSchedule();
+	public List<ScheduleListResponseDTO> scheduleListByCalendarId(Long calendarId);
 }

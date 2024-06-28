@@ -42,8 +42,10 @@ public class ScheduleServiceImpl implements ScheduleService{
 	}
 	
 	@Override
-	public List<ScheduleListResponseDTO> listSchedule() {
-		List<ScheduleEntity> schedules = scheduleRepository.findAll();
+	public List<ScheduleListResponseDTO> scheduleListByCalendarId(Long calendarId) {
+		CalendarEntity calendar = calendarRepository.findById(calendarId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid calendar ID"));
+		List<ScheduleEntity> schedules = scheduleRepository.findByCalendar(calendar);
 		return schedules.stream().map(schedule -> new ScheduleListResponseDTO(
 				schedule.getSCHEDULE_ID(),
 				schedule.getCalendar().getCALENDAR_ID(),

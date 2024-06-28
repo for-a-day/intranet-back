@@ -1,6 +1,8 @@
 package com.server.intranet.calendar.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +30,18 @@ public class CalendarController {
 	@Autowired
 	private CalendarService calendarService;
 	
-	@GetMapping("/calendar")
-	public List<CalendarListResponseDTO> listCalender() {
-		return calendarService.listCalendar();
+	/*
+	 * @GetMapping("/calendar") public List<CalendarListResponseDTO> listCalender()
+	 * { return calendarService.listCalendar(); }
+	 */
+	
+	@GetMapping("/calendar/department/{department}")
+	public ResponseEntity<Map<String, Object>> departmentListCalendar(@PathVariable Long department) {
+		List<CalendarListResponseDTO> calendars = calendarService.calendarByDepartment(department);
+		Map<String, Object> response = new HashMap<>();
+		response.put("status", "success");
+		response.put("data", calendars);
+		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping("/calendar")

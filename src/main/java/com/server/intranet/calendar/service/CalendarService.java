@@ -9,7 +9,8 @@ import com.server.intranet.calendar.entity.CalendarEntity;
 
 public interface CalendarService {
 	public CalendarEntity createCalendar(CalendarCreateRequestDTO calendarRequestDTO);
-	public List<CalendarListResponseDTO> listCalendar();
+	/* public List<CalendarListResponseDTO> listCalendar(); */
+	public List<CalendarListResponseDTO> calendarByDepartment(Long department);
 	public Integer updateCalendar(Long calendarId, CalendarUpdateRequestDTO updateRequestDTO);
 	public void deleteCalendar(Long calendarId);
 }
