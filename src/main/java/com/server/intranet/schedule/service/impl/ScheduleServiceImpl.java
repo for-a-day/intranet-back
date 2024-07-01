@@ -1,6 +1,7 @@
 package com.server.intranet.schedule.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,10 @@ public class ScheduleServiceImpl implements ScheduleService{
 	}
 	
 	@Override
-	public List<ScheduleListResponseDTO> listSchedule() {
-		List<ScheduleEntity> schedules = scheduleRepository.findAll();
+	public List<ScheduleListResponseDTO> scheduleListByCalendarId(Long calendarId) {
+		CalendarEntity calendar = calendarRepository.findById(calendarId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid calendar ID"));
+		List<ScheduleEntity> schedules = scheduleRepository.findByCalendar(calendar);
 		return schedules.stream().map(schedule -> new ScheduleListResponseDTO(
 				schedule.getSCHEDULE_ID(),
 				schedule.getCalendar().getCALENDAR_ID(),
@@ -56,4 +59,44 @@ public class ScheduleServiceImpl implements ScheduleService{
 				schedule.getLOCATION()
 		)).collect(Collectors.toList());
 	}
+	
+	@Override
+	public List<ScheduleListResponseDTO> detailSchedule(Long sheduleId) {
+		Optional<ScheduleEntity> schedules = scheduleRepository.findById(sheduleId);
+		return schedules.stream().map(schedule -> {
+			ScheduleListResponseDTO listResponseDTO = new ScheduleListResponseDTO();
+			listResponseDTO.setScheduleId(schedule.getSCHEDULE_ID());
+			listResponseDTO.setSubject(schedule.getSUBJECT());
+			listResponseDTO.setContent(schedule.getCONTENT());
+			listResponseDTO.setStartDate(schedule.getSTART_DATE());
+			listResponseDTO.setEndDate(schedule.getEND_DATE());
+			listResponseDTO.setStartTime(schedule.getSTART_TIME());
+			listResponseDTO.setEndDate(schedule.getEND_TIME());
+			listResponseDTO.setLocation(schedule.getLOCATION());
+			return listResponseDTO;
+		}).collect(Collectors.toList());
+	}
+	
+	@Override
+	public Integer updateSchedule(Long scheduleId, ScheduleCreateRequestDTO requestDTO) {
+		ScheduleEntity schedule = scheduleRepository.findById(scheduleId).orElse(null);
+		if (schedule != null) {
+			schedule.setSUBJECT(requestDTO.getSubject());
+			schedule.setCONTENT(requestDTO.getContent());
+			schedule.setSTART_DATE(requestDTO.getStartDate());
+			schedule.setEND_DATE(requestDTO.getEndDate());
+			schedule.setSTART_TIME(requestDTO.getStartTime());
+			schedule.setEND_TIME(requestDTO.getEndTime());
+			schedule.setLOCATION(requestDTO.getLocation());
+			scheduleRepository.save(schedule);
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+		@Override
+		public void deleteSchedule(Long scheduleId) {
+			ScheduleEntity schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new RuntimeException("schedule not found"));
+			scheduleRepository.delete(schedule);
+		}
 }

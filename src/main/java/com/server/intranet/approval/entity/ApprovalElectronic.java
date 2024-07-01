@@ -39,7 +39,7 @@ public class ApprovalElectronic {
     @Column(name = "SUBJECT", nullable = false)
     private String subject;
 
-    @Column(name = "DOC_BODY", nullable = false, length = 65535)
+    @Column(name = "DOC_BODY", nullable = false, columnDefinition="TEXT")
     private String doc_body;
 
     @Column(name = "REASON")
