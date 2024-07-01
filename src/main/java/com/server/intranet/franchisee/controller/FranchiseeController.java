@@ -4,10 +4,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,11 +37,20 @@ public class FranchiseeController {
 	
 	// 목록
 	@GetMapping("/store")
-	public List<FranchiseeResponsetDto> franList(){		
-		List<FranchiseeResponsetDto> franList = franchiseeService.franList();
-		return franList;		
+	public ResponseEntity<Map<String, Object>> franList() {		
+	    List<FranchiseeResponsetDto> franList = franchiseeService.franList();
+	    Map<String, FranchiseeResponsetDto> franMap = franList.stream()
+	            .collect(Collectors.toMap(FranchiseeResponsetDto::getFranchiseeId, Function.identity()));
+	    
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("data", franMap);
+	    response.put("message", "가맹점 목록 생성 완료");
+	    response.put("status", "success");
+	    
+	    return ResponseEntity.ok(response);
 	}
 	
+	// 등록
 	@PostMapping("/store")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody FranchiseeRequestDto franchiseeRequestDto){
 		try {
@@ -58,11 +71,21 @@ public class FranchiseeController {
 		    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }															
 			try {
-				FranchiseeEntity update = franchiseeService.edit(franchiseeRequestDto);
+				FranchiseeEntity updateFran = franchiseeService.edit(franchiseeRequestDto);
 				return new ResponseEntity<>(Collections.singletonMap("message", "수정 : 성공"), HttpStatus.OK);
 			} catch (Exception e) {
 				 return new ResponseEntity<>(Collections.singletonMap("message", "Update failed!"), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 	}
-
+	
+	//삭제
+	@DeleteMapping("/store/{franchiseeId}")
+	public ResponseEntity<Map<String, Object>> delete(@PathVariable String franchiseeId){
+		franchiseeService.delete(franchiseeId);
+		Map<String, Object> response = new HashMap<>();
+		response.put("status", "success");
+        response.put("message", "Franchisee deleted successfully.");
+        return ResponseEntity.ok(response);
+	}
+	
 }

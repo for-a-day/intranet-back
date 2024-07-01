@@ -11,8 +11,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -22,6 +24,8 @@ import lombok.ToString;
 @Builder
 @Table(name = "exit_franchisee")
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ClosingEntity {
 	
 	@Id
@@ -57,7 +61,7 @@ public class ClosingEntity {
 	@Column(name = "closing_reason", nullable = false, length = 100) //폐점사유
 	private String closingReason;
 	
-	@Column(name = "employee_id", nullable = false) // 사원아이디
+	@Column(name = "employee_id", nullable = true) // 사원아이디
 	private Long employeeId;
 	
 	@OneToMany(mappedBy = "closing_id") 
