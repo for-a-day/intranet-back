@@ -3,14 +3,19 @@ package com.server.intranet.schedule.dto;
 import java.sql.Time;
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ScheduleCreateRequestDTO {
 
+	private Long schduleId;
 	private Long calendarId;
 	
 	@NonNull
