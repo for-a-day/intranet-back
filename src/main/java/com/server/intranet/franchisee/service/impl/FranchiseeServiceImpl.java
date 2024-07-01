@@ -79,13 +79,8 @@ public class FranchiseeServiceImpl implements FranchiseeService{
 	
 	// 삭제 기능
 	@Override
-	public FranchiseeEntity delete(String franchiseeId) {
-		// 1. api 가지고 온다
-		// 2. 폐점 DB 갱신 (insert)
-		// 3. 경고 DB : 폐점 아이디 update (수정)
-		// 4. 경고 DB : 가맹점 아이디 set null (수정)
-		// 5. 가맹점 DB : 해당 api와 관련된 데이터 삭제 
-		return null;
+	public void delete(String franchiseeId) {
+	    franchiseeRepository.deleteById(franchiseeId);
 	}
 	
 	// 등록

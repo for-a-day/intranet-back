@@ -3,8 +3,10 @@ package com.server.intranet.sales.entity;
 import com.server.intranet.franchisee.entity.FranchiseeEntity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -14,6 +16,8 @@ import lombok.ToString;
 @Builder
 @Table(name = "sales_management")
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class SalesEntity {
 	
 	@Id
