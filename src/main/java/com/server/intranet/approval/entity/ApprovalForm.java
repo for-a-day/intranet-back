@@ -40,7 +40,7 @@ public class ApprovalForm {
     @Column(name = "SUBJECT", nullable = false)
     private String subject;
 
-    @Column(name = "CONTENT", nullable = false, length = 65535)
+    @Column(name = "CONTENT", nullable = false, columnDefinition="TEXT")
     private String content;
 
     @Column(name = "STATUS")
