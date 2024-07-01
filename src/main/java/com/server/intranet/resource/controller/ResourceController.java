@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/employees")
-@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("app/employees")
 public class ResourceController {
 
     private final ResourceServiceImpl resourceServiceImpl;
