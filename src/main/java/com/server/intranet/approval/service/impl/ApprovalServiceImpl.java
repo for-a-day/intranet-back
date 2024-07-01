@@ -1,8 +1,12 @@
 package com.server.intranet.approval.service.impl;
 
 import com.server.intranet.approval.dto.ApprovalFormResponseDTO;
+import com.server.intranet.approval.dto.ApprovalRequestDTO;
+import com.server.intranet.approval.dto.ApprovalResponseDTO;
+import com.server.intranet.approval.entity.ApprovalElectronic;
 import com.server.intranet.approval.entity.ApprovalForm;
 import com.server.intranet.approval.entity.Storage;
+import com.server.intranet.approval.repository.ApprovalElectronicRepository;
 import com.server.intranet.approval.repository.ApprovalFormRepository;
 import com.server.intranet.approval.repository.StorageRepository;
 import com.server.intranet.approval.service.ApprovalService;
@@ -11,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -21,7 +26,10 @@ import java.util.List;
 public class ApprovalServiceImpl implements ApprovalService {
     //양식 폼 레포지토리
     private final ApprovalFormRepository formRepository;
+    //저장소 레포지토리
     private final StorageRepository storageRepository;
+    //전자개발 레포지토리
+    private final ApprovalElectronicRepository approvalRepository;
 
     /**
      * methodName : selectFormList
@@ -82,4 +90,47 @@ public class ApprovalServiceImpl implements ApprovalService {
 
         return storageList;
     }
+
+
+    @Override
+    public ApprovalResponseDTO createApproval(ApprovalRequestDTO requestDTO) throws Exception {
+        ApprovalForm form = formRepository.findById(requestDTO.getFormId()).orElseThrow();
+        form.setFormId(requestDTO.getFormId());
+        ApprovalElectronic approval = ApprovalElectronic.builder()
+                .formId(form)
+                .subject(requestDTO.getSubject())
+                .status("D")
+                .doc_body(requestDTO.getDocBody())
+                .reason(requestDTO.getReason())
+                .build();
+
+        ApprovalElectronic response = approvalRepository.save(approval);
+        return ApprovalResponseDTO.builder()
+                .approvalId(response.getApprovalId())
+                .subject(response.getSubject())
+                .status(response.getStatus())
+                .formId(response.getFormId().getFormId())
+                .reason(response.getReason())
+                .docBody(response.getDoc_body())
+                .urgency(response.getUrgency())
+                .reasonRejection(response.getRejection())
+                .build();
+    }
+
+    @Override
+    public ApprovalResponseDTO selectApprovalDetail(Long approvalId) throws Exception {
+        ApprovalElectronic response = approvalRepository.findById(approvalId).orElseThrow();
+        return ApprovalResponseDTO.builder()
+                .approvalId(response.getApprovalId())
+                .subject(response.getSubject())
+                .status(response.getStatus())
+                .formId(response.getFormId().getFormId())
+                .reason(response.getReason())
+                .docBody(response.getDoc_body())
+                .urgency(response.getUrgency())
+                .reasonRejection(response.getRejection())
+                .build();
+    }
+
+
 }
