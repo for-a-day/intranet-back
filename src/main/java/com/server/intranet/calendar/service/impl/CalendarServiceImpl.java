@@ -41,17 +41,24 @@ public class CalendarServiceImpl implements CalendarService {
 		return calendarRepository.save(calendar);
 	}
 	
-	@Override
-	public List<CalendarListResponseDTO> listCalendar() {
-		List<CalendarEntity> calendars = calendarRepository.findAll();
-		return calendars.stream().map(calendar -> {
-			CalendarListResponseDTO ListDTO = new CalendarListResponseDTO();
-				ListDTO.setCalendarId(calendar.getCALENDAR_ID());
-				ListDTO.setCalendarName(calendar.getCALENDAR_NAME());
-				return ListDTO;
-		}).collect(Collectors.toList());
-	}
+	/*
+	 * @Override public List<CalendarListResponseDTO> listCalendar() {
+	 * List<CalendarEntity> calendars = calendarRepository.findAll(); return
+	 * calendars.stream().map(calendar -> { CalendarListResponseDTO ListDTO = new
+	 * CalendarListResponseDTO(); ListDTO.setCalendarId(calendar.getCALENDAR_ID());
+	 * ListDTO.setCalendarName(calendar.getCALENDAR_NAME()); return ListDTO;
+	 * }).collect(Collectors.toList()); }
+	 */
 	
+	@Override
+	public List<CalendarListResponseDTO> calendarByDepartment(Long department) {
+		List<CalendarEntity> calendars= calendarRepository.findByDepartment_DepartmentCode(department);
+		return calendars.stream().map(calendar -> new CalendarListResponseDTO(
+				calendar.getCALENDAR_ID(),
+				calendar.getCALENDAR_NAME(),
+				calendar.getDepartment().getDepartmentCode()
+				)).collect(Collectors.toList());
+	}
 	
 	@Override
 	public Integer updateCalendar(Long calendarId, CalendarUpdateRequestDTO updateRequestDTO) {
