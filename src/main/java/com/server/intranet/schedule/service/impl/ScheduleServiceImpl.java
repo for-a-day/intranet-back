@@ -65,13 +65,14 @@ public class ScheduleServiceImpl implements ScheduleService{
 		Optional<ScheduleEntity> schedules = scheduleRepository.findById(sheduleId);
 		return schedules.stream().map(schedule -> {
 			ScheduleListResponseDTO listResponseDTO = new ScheduleListResponseDTO();
+			listResponseDTO.setCalendarId(schedule.getCalendar().getCALENDAR_ID());
 			listResponseDTO.setScheduleId(schedule.getSCHEDULE_ID());
 			listResponseDTO.setSubject(schedule.getSUBJECT());
 			listResponseDTO.setContent(schedule.getCONTENT());
 			listResponseDTO.setStartDate(schedule.getSTART_DATE());
 			listResponseDTO.setEndDate(schedule.getEND_DATE());
 			listResponseDTO.setStartTime(schedule.getSTART_TIME());
-			listResponseDTO.setEndDate(schedule.getEND_TIME());
+			listResponseDTO.setEndTime(schedule.getEND_TIME());
 			listResponseDTO.setLocation(schedule.getLOCATION());
 			return listResponseDTO;
 		}).collect(Collectors.toList());
