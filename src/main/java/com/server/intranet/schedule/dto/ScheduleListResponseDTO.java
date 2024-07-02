@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ScheduleListResponseDTO {
 
-	private Long schduleId;
+	private Long scheduleId;
 	private Long calendarId;
 	
 	@NonNull

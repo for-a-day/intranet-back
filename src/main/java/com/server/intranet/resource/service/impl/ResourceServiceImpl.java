@@ -6,11 +6,11 @@ import com.server.intranet.resource.repository.*;
 import com.server.intranet.resource.service.ResourceService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,13 +23,20 @@ public class ResourceServiceImpl implements ResourceService {
 
     private final ExitEmployeeRepository exitEmployeeRepository;
 
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
+
+
     @Autowired
-    public ResourceServiceImpl(ResourceRepository resourceRepository, DepartmentRepository departmentRepository, AuthorityRepository authorityRepository, LevelRepository levelRepository, ExitEmployeeRepository exitEmployeeRepository) {
+    public ResourceServiceImpl(ResourceRepository resourceRepository, DepartmentRepository departmentRepository, AuthorityRepository authorityRepository, LevelRepository levelRepository, ExitEmployeeRepository exitEmployeeRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.resourceRepository = resourceRepository;
         this.departmentRepository = departmentRepository;
         this.authorityRepository = authorityRepository;
         this.levelRepository = levelRepository;
         this.exitEmployeeRepository = exitEmployeeRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public List<ResourceResponseDTO> getAllEmployees() {
@@ -100,7 +107,9 @@ public class ResourceServiceImpl implements ResourceService {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMdd");
         String formattedBirth = dateFormat.format(employeeDTO.getBirth());
-        employeeEntity.setEmployeePassword(formattedBirth);
+
+        String encryptedPassword = bCryptPasswordEncoder.encode(formattedBirth);
+        employeeEntity.setEmployeePassword(encryptedPassword);
 
         employeeEntity.setName(employeeDTO.getName());
         employeeEntity.setGender(employeeDTO.getGender());
