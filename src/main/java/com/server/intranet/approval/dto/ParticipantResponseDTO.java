@@ -3,31 +3,32 @@ package com.server.intranet.approval.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 /**
  * packageName    : com.server.intranet.approval.dto
- * fileName       : ApprovalRequestDTO
+ * fileName       : ApprovalParticipantDTO
  * author         : gladious
- * date           : 2024-06-28
+ * date           : 2024-07-01
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2024-06-28        gladious       최초 생성
+ * 2024-07-01        gladious       최초 생성
  */
 @Data
 @Builder
-public class ApprovalRequestDTO {
+public class ParticipantResponseDTO {
+    private Long participantId;
     private Long approvalId;
-    private Long formId;
-    private String fileName;
-    private String reason;
-    private String reasonRejection;
+    private Long employeeId;
+    private Integer seq;
+    private String type;
     private String status;
-    private String subject;
-    private String urgency;
-    private String docBody;
-    private List<Map<String,Object>> approvalInfo;
+    private LocalDateTime approvalDate;
+    private String employeeName;
+    private Long departmentCode;
+    private String departmentName;
 }
