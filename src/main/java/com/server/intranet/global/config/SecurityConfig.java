@@ -30,8 +30,9 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login").permitAll()
-                        .anyRequest().authenticated())
+                		.anyRequest().permitAll()) // 모든 요청을 허용
+//                        .requestMatchers("/login","/app/*").permitAll()
+//                        .anyRequest().authenticated())
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
