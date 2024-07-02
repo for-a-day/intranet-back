@@ -10,6 +10,7 @@ import java.util.Date;
 @Table(name = "EMPLOYEE")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class EmployeeEntity {
 
     //아이디

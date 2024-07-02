@@ -1,5 +1,6 @@
 package com.server.intranet.approval.entity;
 
+import com.server.intranet.resource.entity.EmployeeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -36,6 +37,10 @@ public class ApprovalParticipant {
     private ApprovalElectronic approvalId;
     
 //    사원테이블 생성 시 추가할 예정
+    @ManyToOne
+    @JoinColumn(name = "EMPLOYEE_ID")
+    private EmployeeEntity employeeId;
+
 //    @ManyToOne
 //    @JoinColumn(name = "EMPLOYEE_ID")
 //    private ApprovalForm formId;

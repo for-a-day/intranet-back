@@ -81,7 +81,7 @@ public class ApprovalController {
      * @return response entity
      * @throws Exception the exception
      */
-    @GetMapping("/draft/{approvalId}")
+    @GetMapping("/draft/doc/{approvalId}")
     public ResponseEntity<Map<String,Object>> selectApprovalDetail(@PathVariable("approvalId") Long approvalId) throws Exception{
         ApprovalResponseDTO data = approvalService.selectApprovalDetail(approvalId);
 
