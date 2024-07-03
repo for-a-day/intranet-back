@@ -16,6 +16,7 @@ import com.server.intranet.approval.service.ApprovalService;
 import com.server.intranet.resource.entity.EmployeeEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,27 +109,36 @@ public class ApprovalServiceImpl implements ApprovalService {
      * @throws Exception the exception
      */
     @Override
+    @Transactional
     public ApprovalResponseDTO createApproval(ApprovalRequestDTO requestDTO) throws Exception {
+        Long employeeId = 6L;
         ApprovalForm form = formRepository.findById(requestDTO.getFormId()).orElseThrow();
         form.setFormId(requestDTO.getFormId());
+        String approvalStatus = "1";
+        if(requestDTO.getApprovalInfo().size() == 1){
+            approvalStatus = "D";
+        }
         ApprovalElectronic approval = ApprovalElectronic.builder()
                 .formId(form)
                 .subject(requestDTO.getSubject())
-                .status("D")
+                .status(approvalStatus)
                 .doc_body(requestDTO.getDocBody())
                 .reason(requestDTO.getReason())
                 .build();
 
         ApprovalElectronic response = approvalRepository.save(approval);
+
+        // 기안자 저장(프론트에서 작업하면 기안자를 수정할 수도 있어서 백엔드에서 로직 작업)
+        saveApprovalParticipant(response, employeeId, 0, "기안", "D");
+
+        //결재자 저장
         for(Map<String, Object> participant : requestDTO.getApprovalInfo()){
-            ApprovalParticipant approvalParticipant = ApprovalParticipant.builder()
-                    .approvalId(response)
-                    .employeeId(EmployeeEntity.builder().employeeId(Long.valueOf((Integer) participant.get("employeeId"))).build())
-                    .seq((Integer) participant.get("seq"))
-                    .type((String) participant.get("type"))
-                    .status((String) participant.get("status"))
-                    .build();
-            participantRepository.save(approvalParticipant);
+            Long participantEmployeeId = Long.valueOf((Integer) participant.get("employeeId"));
+            Integer seq = (Integer) participant.get("seq");
+            String type = (String) participant.get("type");
+            String status = (String) participant.get("status");
+
+            saveApprovalParticipant(response, participantEmployeeId, seq, type, status);
         }
 
         return ApprovalResponseDTO.builder()
@@ -141,6 +151,18 @@ public class ApprovalServiceImpl implements ApprovalService {
                 .urgency(response.getUrgency())
                 .reasonRejection(response.getRejection())
                 .build();
+    }
+
+    //참여자 저장 함수
+    private void saveApprovalParticipant(ApprovalElectronic approval, Long employeeId, Integer seq, String type, String status) {
+        ApprovalParticipant approvalParticipant = ApprovalParticipant.builder()
+                .approvalId(approval)
+                .employeeId(EmployeeEntity.builder().employeeId(employeeId).build())
+                .seq(seq)
+                .type(type)
+                .status(status)
+                .build();
+        participantRepository.save(approvalParticipant);
     }
 
     /**
