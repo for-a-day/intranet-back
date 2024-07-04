@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
-@ComponentScan
+@ComponentScan("com.server.intranet")
 @EnableJpaAuditing
 public class intranetApplication {
 

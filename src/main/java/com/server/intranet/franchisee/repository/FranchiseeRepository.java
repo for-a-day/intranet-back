@@ -13,4 +13,5 @@ public interface FranchiseeRepository extends JpaRepository<FranchiseeEntity, St
 	// 가맹점 목록 화면
 	List<FranchiseeEntity> findAll();
 	Optional<FranchiseeEntity> findByFranchiseeId(FranchiseeEntity franchisee_Id);
+	FranchiseeEntity findByFranchiseeId(String franchiseeId);
 }

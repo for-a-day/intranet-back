@@ -12,4 +12,5 @@ public interface FranchiseeService {
 	FranchiseeEntity edit(FranchiseeRequestDto dto) throws Exception; //수정
 	void delete(String franchiseeId);//삭제
 	FranchiseeEntity insert(FranchiseeRequestDto dto) throws Exception; //입력
+	FranchiseeEntity updateFranchisee(String franchiseeId, FranchiseeEntity updatedData); // 매출 api
 }

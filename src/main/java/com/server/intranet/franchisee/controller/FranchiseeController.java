@@ -79,9 +79,9 @@ public class FranchiseeController {
 	}
 	
 	//삭제
-	@DeleteMapping("/store/{franchiseeId}")
-	public ResponseEntity<Map<String, Object>> delete(@PathVariable String franchiseeId){
-		franchiseeService.delete(franchiseeId);
+	@DeleteMapping("/store/{franchisee_id}")
+	public ResponseEntity<Map<String, Object>> delete(@PathVariable String franchisee_id){
+		franchiseeService.delete(franchisee_id);
 		Map<String, Object> response = new HashMap<>();
 		response.put("status", "success");
         response.put("message", "Franchisee deleted successfully.");
