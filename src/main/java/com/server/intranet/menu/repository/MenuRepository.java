@@ -12,4 +12,5 @@ import com.server.intranet.menu.entity.MenuEntity;
 public interface MenuRepository extends JpaRepository<MenuEntity, String> {
 	List<MenuEntity> findAll();
 	Optional<MenuEntity> findById(String menu_id);
+	//MenuEntity findByMenu_id(String menu_id);
 }

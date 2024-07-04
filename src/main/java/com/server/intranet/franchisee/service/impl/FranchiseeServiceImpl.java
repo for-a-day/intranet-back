@@ -15,7 +15,11 @@ import com.server.intranet.franchisee.service.FranchiseeService;
 import com.server.intranet.resource.entity.EmployeeEntity;
 import com.server.intranet.resource.repository.ResourceRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class FranchiseeServiceImpl implements FranchiseeService{
 	
 	private final FranchiseeRepository franchiseeRepository;
@@ -105,5 +109,29 @@ public class FranchiseeServiceImpl implements FranchiseeService{
         // 업데이트
         return franchiseeRepository.save(franchisee);
 	}
+	
+	
+	// api 받을려고 이거까지 만듬 (매출 api)
+	// 기존의 프랜차이즈 엔터티 업데이트 메서드
+	@Override
+    public FranchiseeEntity updateFranchisee(String franchiseeId, FranchiseeEntity updatedData) {
+        // 기존의 프랜차이즈 엔터티 조회
+        FranchiseeEntity existingFranchisee = franchiseeRepository.findByFranchiseeId(franchiseeId);
 
+        if (existingFranchisee != null) {
+            // 엔터티 필드 업데이트 (기존 값을 유지한 채로 API 데이터로 업데이트)
+            existingFranchisee.setFranchiseeName(updatedData.getFranchiseeName());
+            existingFranchisee.setOwner(updatedData.getOwner());
+            existingFranchisee.setAddress(updatedData.getAddress());
+            existingFranchisee.setPhoneNumber(updatedData.getPhoneNumber());
+            existingFranchisee.setContractDate(updatedData.getContractDate());
+            existingFranchisee.setExpirationDate(updatedData.getExpirationDate());
+            existingFranchisee.setWarningCount(updatedData.getWarningCount());
+
+            // 업데이트된 엔터티 저장 및 반환
+            return franchiseeRepository.save(existingFranchisee);
+        } else {
+        	throw new EntityNotFoundException("Franchisee not found for id: " + franchiseeId);
+        }
+    }
 }

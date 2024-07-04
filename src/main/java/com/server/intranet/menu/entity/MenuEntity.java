@@ -45,20 +45,4 @@ public class MenuEntity {
 	// 메뉴단종 여부
 	@Column(length = 5, nullable = false)    
 	private int menu_end;
-	
-//    public MenuEntity() {
-//        this.menu_end = 1; // Default 1 (판매)
-//    }
-//    
-//    public MenuEntity(String menu_id, String menu_name, int menu_price, String menu_recipe, int memu_origin_price, int menu_end) {
-//        this.menu_id = menu_id;
-//        this.menu_name = menu_name;
-//        this.menu_price = menu_price;
-//        this.menu_recipe = menu_recipe;
-//        this.memu_origin_price = memu_origin_price;
-//        this.menu_end = menu_end;
-//    }
-	
-//	@OneToMany(mappedBy = "menu")
-//	private Set<OrderEntity> orders;
 }

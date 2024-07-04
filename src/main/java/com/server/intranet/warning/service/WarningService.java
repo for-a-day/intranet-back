@@ -11,7 +11,7 @@ public interface WarningService {
 	
 	List<WarningResponseDto> warnList();
 	WarningEntity insert(WarningRequestDto dto) throws Exception;
-	WarningEntity update(FranchiseeEntity franchisee_id, WarningRequestDto dto) throws Exception;
-	boolean existId(FranchiseeEntity franchisee_id);
+	WarningEntity update(String franchisee_id, WarningRequestDto dto) throws Exception;
+	boolean existId(String franchisee_id);
 	
 }
