@@ -1,8 +1,14 @@
 package com.server.intranet.resource.controller;
 
+import com.server.intranet.global.config.JwtUtil;
 import com.server.intranet.resource.dto.*;
+import com.server.intranet.resource.entity.EmployeeEntity;
 import com.server.intranet.resource.service.impl.ResourceServiceImpl;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +21,12 @@ import java.util.Map;
 public class ResourceController {
 
     private final ResourceServiceImpl resourceServiceImpl;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public ResourceController(ResourceServiceImpl resourceServiceImpl) {
+    public ResourceController(ResourceServiceImpl resourceServiceImpl, JwtUtil jwtUtil) {
         this.resourceServiceImpl = resourceServiceImpl;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/list")
@@ -109,6 +117,22 @@ public class ResourceController {
         } else {
             return ResponseEntity.status(500).body(response);
         }
+        
+    }
+    
+    @GetMapping("/token")
+    public ResponseEntity<Map<String, Object>> loginToken(HttpServletRequest request) {
+    	String token = request.getHeader("Authorization").substring(7);
+    	Long employeeId = jwtUtil.extractEmployeeId(token);
+    	
+    	EmployeeEntity employee = resourceServiceImpl.loginToken(employeeId);
+    	if(employee == null) {
+    		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    	}
+    	
+    	Map<String, Object> response = new HashMap<>();
+    	response.put("employee", employee);
+    	return ResponseEntity.ok(response);
     }
 
 
