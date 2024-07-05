@@ -66,7 +66,7 @@ public class WarningServiceImpl implements WarningService {
 	
 	// 수정
 	@Override
-	public WarningEntity update(String franchisee_id, WarningRequestDto dto) throws Exception {
+	public List<WarningEntity> update(String franchisee_id, WarningRequestDto dto) throws Exception {
 		System.out.println("update 서비스 단 도착");
 		try {
 			System.err.println("update 서비스 try 문으로 입성");
@@ -84,21 +84,36 @@ public class WarningServiceImpl implements WarningService {
 			
 			// 아이디 조회해서 넣어줄 객체 생성 => null이라 값도 null
 			FranchiseeEntity franchisee = franchiseeRepository.findByFranchiseeId(dto.getFranchisee_id());
+			FranchiseeEntity franchisee2 = franchiseeRepository.findByFranchiseeId(dto.getClosing_id());
 			
 			System.out.println("update 서비스 : franchisee => " + franchisee);
+			System.err.println("update 서비스 : franchisee2 => " + franchisee2);
 			System.out.println("update 서비스 : closing => " + closing);
 			
 			// 아이디 조회 후, 객체 주입 => null이라 값도 null
-			WarningEntity warning = warningRepository.findByFranchiseeId(franchisee)
-					.orElseThrow(() -> new RuntimeException("해당 franchisee_id에 해당하는 경고가 없습니다."));			
-					warning.setFranchiseeId(franchisee);
-					warning.setWarningReason(dto.getWarningReason());
-					warning.setClosing_id(closing);
-					
-			System.err.println("update 서비스 : warning => " + warning);
+			List<WarningEntity> warning = warningRepository.findAllByFranchiseeId(franchisee2);
+//					.orElseThrow(() -> new RuntimeException("해당 franchisee_id에 해당하는 경고가 없습니다."));			
+
+			if (warning.isEmpty()) {
+			    throw new RuntimeException("해당 franchisee_id에 해당하는 경고가 없습니다.");
+			 }					
+
+			System.err.println("update 서비스 : warning => " + warning); 
+			
+			for (WarningEntity warnings : warning) {
+					warnings.setFranchiseeId(franchisee);
+					warnings.setWarningReason(dto.getWarningReason());
+					warnings.setClosing_id(closing);
+			 }
+			
+			System.err.println("update 서비스 : for문 통과"); 
+			
+			List<WarningEntity> updatedWarnings = warningRepository.saveAll(warning);
+			
+			System.err.println("update 서비스 : updatedWarnings" + updatedWarnings); 
 			
 			System.err.println("update 서비스 정상 구동 완료");
-			return warningRepository.save(warning);
+			return updatedWarnings;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("폐점 경고 수정 중 에러 발생");

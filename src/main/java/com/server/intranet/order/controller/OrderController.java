@@ -31,10 +31,10 @@ public class OrderController {
 	@GetMapping("/order")
 	public ResponseEntity<Map<String, Object>> orderList(){
 		List<OrderResponseDto> orderList = orderService.orderList();
-		Map<Long, Object> orderMap = orderList.stream()
-				.collect(Collectors.toMap(OrderResponseDto :: getOrder_id, Function.identity()));
+//		Map<Long, Object> orderMap = orderList.stream()
+//				.collect(Collectors.toMap(OrderResponseDto :: getOrder_id, Function.identity()));
 		Map<String, Object> response = new HashMap<>();
-		response.put("data", orderMap);
+		response.put("data", orderList);
 		response.put("message", "주문 목록 생성 완료");
 		response.put("status", "success");
 		System.err.println("결과 : " + orderList);

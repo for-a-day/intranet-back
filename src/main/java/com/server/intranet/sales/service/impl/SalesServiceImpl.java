@@ -69,7 +69,7 @@ public class SalesServiceImpl implements SalesService {
 						sales.getMonthlySales(),
 						sales.getYear(),
 						sales.getMonth(),
-						sales.getFranchiseeId().getFranchiseeId()
+						sales.getFranchiseeId()
 						))
 						.collect(Collectors.toList());
 	}

@@ -88,8 +88,8 @@ public class OrderServiceImpl implements OrderService{
 					order.getOrder_quantity(),
 					order.getOrder_price(),
 					order.getOrder_date(),
-					order.getFranchisee_id().getFranchiseeId(),
-					order.getMenu_id().getMenu_id()
+					order.getFranchisee_id(),
+					order.getMenu_id()
 					)).collect(Collectors.toList());
 	}
 }
