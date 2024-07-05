@@ -32,10 +32,8 @@ public class SalesController {
 	@GetMapping("/sales")
 	public ResponseEntity<Map<String, Object>> salesList(){
 		List<SalesReponseDto> salesList = salesService.salesList();
-		Map<String, SalesReponseDto> salesMap = salesList.stream()
-				.collect(Collectors.toMap(SalesReponseDto :: getFranchiseeId, Function.identity()));
 		Map<String, Object> responseMap = new HashMap<>();
-		responseMap.put("data", salesMap);
+		responseMap.put("data", salesList);
 		responseMap.put("message", "매출목록 생성 완료");
 		responseMap.put("status", "success");
 		

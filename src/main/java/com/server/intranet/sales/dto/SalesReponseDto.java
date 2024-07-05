@@ -16,9 +16,9 @@ public class SalesReponseDto {
 	private int monthlySales; 
 	private int year;
 	private int month; 
-	private String franchiseeId;
+	private FranchiseeEntity franchiseeId;
 	
-	public SalesReponseDto(Long salesId, int monthlySales, int year, int month, String franchiseeId) {
+	public SalesReponseDto(Long salesId, int monthlySales, int year, int month, FranchiseeEntity franchiseeId) {
 		super();
 		this.salesId = salesId;
 		this.monthlySales = monthlySales;

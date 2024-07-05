@@ -100,14 +100,14 @@ public class WarningController {
     public ResponseEntity<Map<String, Object>> update(@PathVariable String franchisee_id, @RequestBody WarningRequestDto warningRequestDto) {
 		System.err.println(" update 컨트롤러 도착 ");
 		try {
-            WarningEntity updateWarning = warningService.update(franchisee_id, warningRequestDto);
+			List<WarningEntity> updateWarning = warningService.update(franchisee_id, warningRequestDto);
             System.out.println("update 서비스 탈출 ");
             System.out.println("updateWarning 결과 값 : " + updateWarning);
             
             // 업데이트 결과 확인
-            WarningEntity savedWarning = warningRepository.findById(updateWarning.getWarningId())
-                    .orElseThrow(() -> new RuntimeException("업데이트된 엔티티를 찾을 수 없습니다."));
-            System.out.println("savedWarning 결과 값 : " + savedWarning);
+//            WarningEntity savedWarning = warningRepository.findById(updateWarning.getWarningId())
+//                    .orElseThrow(() -> new RuntimeException("업데이트된 엔티티를 찾을 수 없습니다."));
+//            System.out.println("savedWarning 결과 값 : " + savedWarning);
             
             return ResponseEntity.ok().body(Collections.singletonMap("message", "경고 수정 성공"));
         } catch (Exception e) {

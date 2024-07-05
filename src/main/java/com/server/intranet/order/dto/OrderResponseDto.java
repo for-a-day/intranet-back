@@ -19,6 +19,6 @@ public class OrderResponseDto {
 	private int order_quantity; // 주문 수량
 	private int order_price; // 총액
 	private Date order_date; // 주문 날짜   
-	private String franchisee_id; // 가맹점 아이디
-	private String menu_id;  // 메뉴 아이디 
+	private FranchiseeEntity franchisee_id; // 가맹점 아이디
+	private MenuEntity menu_id;  // 메뉴 아이디 
 }
