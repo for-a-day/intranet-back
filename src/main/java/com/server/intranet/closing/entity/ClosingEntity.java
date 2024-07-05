@@ -63,7 +63,5 @@ public class ClosingEntity {
 	
 	@Column(name = "employee_id", nullable = true) // 사원아이디
 	private Long employeeId;
-	
-	@OneToMany(mappedBy = "closing_id") 
-	private Set<WarningEntity> warning;
+
 }

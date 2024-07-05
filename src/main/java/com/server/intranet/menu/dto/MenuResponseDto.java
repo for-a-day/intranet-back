@@ -18,7 +18,7 @@ public class MenuResponseDto {
 	// 메뉴단종 여부
 	private int menu_end;
 	
-	public MenuResponseDto(String menu_id, String menu_name, int menu_price, String menu_recipe, int memu_origin_price,
+	public MenuResponseDto(String menu_id, String menu_name, int menu_price, String menu_recipe, int menu_origin_price,
 			int menu_end) {
 		super();
 		this.menu_id = menu_id;

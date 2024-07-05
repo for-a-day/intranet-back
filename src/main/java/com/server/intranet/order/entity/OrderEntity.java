@@ -7,12 +7,16 @@ import com.server.intranet.menu.entity.MenuEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -22,11 +26,14 @@ import lombok.ToString;
 @Builder
 @Table(name = "order_management")
 @ToString(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderEntity { // order가 many, menu가 one
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(length = 50)
-	private String order_id;                 // 주문 아이디
+	private Long order_id;                 // 주문 아이디
 	
 	@Column(length = 100, nullable = false)  // 주문 수량
 	private int order_quantity;
