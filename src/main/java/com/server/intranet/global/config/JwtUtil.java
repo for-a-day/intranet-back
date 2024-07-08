@@ -27,21 +27,26 @@ public class JwtUtil {
         this.secretKey = Keys.hmacShaKeyFor(decodedKey);
     }
 
-    public String generateToken(String subject, Map<String, Object> claims) {
-
+    public String generateToken(Map<String, Object> claims, long expirationTime) {
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 864_000_000)) // 10 days
-                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
     }
 
+    public String generateAccessToken(Map<String, Object> claims) {
+        return generateToken(claims, 1000 * 60 * 60); // 1시간 유효기간
+    }
+
+    public String generateRefreshToken(Map<String, Object> claims) {
+        return generateToken(claims, 1000 * 60 * 60 * 24); // 1일 유효기간
+    }
+
     public Claims parseToken(String token) {
-        return Jwts.parserBuilder()
+        return Jwts.parser()
                 .setSigningKey(secretKey)
-                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }

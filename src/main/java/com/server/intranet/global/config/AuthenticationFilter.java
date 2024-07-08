@@ -2,6 +2,7 @@ package com.server.intranet.global.config;
 
 import com.server.intranet.login.service.impl.LoginServiceImpl;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,52 +11,56 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
 
-    private final LoginServiceImpl loginService;
     private final JwtUtil jwtUtil;
+    private final LoginServiceImpl loginService;
 
     @Autowired
-    public AuthenticationFilter(LoginServiceImpl loginService, JwtUtil jwtUtil) {
-        this.loginService = loginService;
+    public AuthenticationFilter(JwtUtil jwtUtil, LoginServiceImpl loginService) {
         this.jwtUtil = jwtUtil;
+        this.loginService = loginService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
 
-        String token = null;
-        String employeeId = null;
-
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            token = authorizationHeader.substring(7);
+            String token = authorizationHeader.substring(7);
             System.out.println("Extracted token: " + token); // 토큰 출력
+
             try {
                 Claims claims = jwtUtil.parseToken(token);
-                employeeId = claims.getSubject();
-                String roles = (String) claims.get("roles"); // 토큰에서 권한 정보 추출
+                Long employeeId = Long.valueOf(claims.getSubject());
 
-                UserDetails userDetails = new User(employeeId, "", AuthorityUtils.commaSeparatedStringToAuthorityList(roles));
+                CustomUserDetails userDetails = new CustomUserDetails(employeeId.toString(), "",
+                        AuthorityUtils.NO_AUTHORITIES, employeeId);
+
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
+            } catch (ExpiredJwtException e) {
+                logger.error("JWT Token has expired: ", e);
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("JWT Token has expired");
+                return;
             } catch (Exception e) {
                 logger.error("JWT Token validation error: ", e);
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("JWT Token validation error");
+                return;
             }
-        } else {
-            logger.error("Authorization header is missing or does not start with Bearer");
         }
 
         filterChain.doFilter(request, response);
