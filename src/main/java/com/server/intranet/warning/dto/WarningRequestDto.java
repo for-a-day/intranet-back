@@ -2,10 +2,6 @@ package com.server.intranet.warning.dto;
 
 import lombok.Getter;
 import lombok.NonNull; 
-
-import com.server.intranet.closing.entity.ClosingEntity;
-import com.server.intranet.franchisee.entity.FranchiseeEntity;
-
 import jakarta.annotation.Nullable;
 import lombok.Setter;
 
