@@ -1,5 +1,6 @@
 package com.server.intranet.order.service.impl;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,7 +51,7 @@ public class OrderServiceImpl implements OrderService{
 		System.err.println("saveOrderData 서비스 단입니다.");
 		// 가맹점 정보 저장 조회
 		FranchiseeEntity franchiseeEntity = franchiseeRepository.findByFranchiseeId(storeCode);
-		order.setFranchisee_id(franchiseeEntity); // OrderEntity에 저장된 가맹점 정보 설정
+		order.setFranchiseeId(franchiseeEntity); // OrderEntity에 저장된 가맹점 정보 설정
 		
 		System.out.println("가맹점 아이디 조회");
 		
@@ -60,7 +61,7 @@ public class OrderServiceImpl implements OrderService{
 		
 		if (menuEntity.isPresent()) {
 	        MenuEntity menu = menuEntity.get();
-	        order.setMenu_id(menu);
+	        order.setMenuId(menu);
 	    } else {
 	        throw new EntityNotFoundException("Menu not found for code: " + menuCode);
 	    }
@@ -78,18 +79,25 @@ public class OrderServiceImpl implements OrderService{
 		
 		return order;
 	}
-
+	
+	// api 중복 체크
+	@Override
+	public boolean existsByFranchiseeIdAndMenuIdAndOrderDate(FranchiseeEntity storeCode, MenuEntity menuId, Date orderDate){
+		return orderRepository.existsByFranchiseeIdAndMenuIdAndOrderDate(storeCode, menuId, orderDate);
+	}
+	
+	
 	// 목록
 	@Override
 	public List<OrderResponseDto> orderList(){
 		return orderRepository.findAll().stream()
 				.map(order -> new OrderResponseDto(
-					order.getOrder_id(),
-					order.getOrder_quantity(),
-					order.getOrder_price(),
-					order.getOrder_date(),
-					order.getFranchisee_id(),
-					order.getMenu_id()
+					order.getOrderId(),
+					order.getOrderQuantity(),
+					order.getOrderPrice(),
+					order.getOrderDate(),
+					order.getFranchiseeId(),
+					order.getMenuId()
 					)).collect(Collectors.toList());
 	}
 }

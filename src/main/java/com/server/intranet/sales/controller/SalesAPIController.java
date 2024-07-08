@@ -100,6 +100,12 @@ public class SalesAPIController {
                     FranchiseeEntity apiFranchisee = new FranchiseeEntity(); // Assuming FranchiseeEntity has a default constructor
                     apiFranchisee.setFranchiseeId(storeCode);
                     
+                    // 중복 데이터 확인
+                    if (salesService.existsByYearAndMonthAndStoreCode(apiYear, apiMonth, apiFranchisee)) {
+                        System.out.println("중복된 데이터: year=" + apiYear + ", month=" + apiMonth + ", storeCode=" + storeCode);
+                        continue;
+                    }
+                    
                     System.err.println("apiFranchisee에 Id : " + storeCode);
                     
                     // SalesEntity 객체 생성 및 데이터 설정

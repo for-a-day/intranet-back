@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.server.intranet.closing.controller.ClosingController;
 import com.server.intranet.franchisee.entity.FranchiseeEntity;
+import com.server.intranet.warning.dto.WarningModDto;
 import com.server.intranet.warning.dto.WarningRequestDto;
 import com.server.intranet.warning.dto.WarningResponseDto;
 import com.server.intranet.warning.entity.WarningEntity;
@@ -97,21 +98,16 @@ public class WarningController {
 	
 	// 수정 - 가맹점 삭제 시, update
 	@PutMapping("/warn/{franchisee_id}")
-    public ResponseEntity<Map<String, Object>> update(@PathVariable String franchisee_id, @RequestBody WarningRequestDto warningRequestDto) {
+    public ResponseEntity<Map<String, Object>> update(@PathVariable String franchisee_id, @RequestBody WarningModDto warningModDto) {
 		System.err.println(" update 컨트롤러 도착 ");
 		try {
-			List<WarningEntity> updateWarning = warningService.update(franchisee_id, warningRequestDto);
+			List<WarningEntity> updateWarning = warningService.update(franchisee_id, warningModDto);
             System.out.println("update 서비스 탈출 ");
             System.out.println("updateWarning 결과 값 : " + updateWarning);
             
-            // 업데이트 결과 확인
-//            WarningEntity savedWarning = warningRepository.findById(updateWarning.getWarningId())
-//                    .orElseThrow(() -> new RuntimeException("업데이트된 엔티티를 찾을 수 없습니다."));
-//            System.out.println("savedWarning 결과 값 : " + savedWarning);
-            
             return ResponseEntity.ok().body(Collections.singletonMap("message", "경고 수정 성공"));
         } catch (Exception e) {
-        	logger.error("폐점 등록 중 오류 발생: franchiseeId=" + franchisee_id + ", warningRequestDto=" + warningRequestDto, e);
+        	logger.error("폐점 등록 중 오류 발생: franchiseeId=" + franchisee_id + ", warningRequestDto=" + warningModDto, e);
         	e.printStackTrace();
         	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("message", "경고 수정 실패"));
         }

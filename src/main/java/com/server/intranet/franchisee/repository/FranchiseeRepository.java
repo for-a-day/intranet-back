@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.server.intranet.franchisee.entity.FranchiseeEntity;
@@ -14,4 +15,6 @@ public interface FranchiseeRepository extends JpaRepository<FranchiseeEntity, St
 	List<FranchiseeEntity> findAll();
 	Optional<FranchiseeEntity> findByFranchiseeId(FranchiseeEntity franchisee_Id);
 	FranchiseeEntity findByFranchiseeId(String franchiseeId);
+	@Query("SELECT f.franchiseeId FROM FranchiseeEntity f WHERE f.franchiseeId NOT IN (SELECT s.franchiseeId.franchiseeId FROM SalesEntity s)")
+	List<String> findFranchiseeIdsNotInSales();
 }
