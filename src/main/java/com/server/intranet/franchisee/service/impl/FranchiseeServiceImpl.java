@@ -49,7 +49,12 @@ public class FranchiseeServiceImpl implements FranchiseeService{
                 ))
                 .collect(Collectors.toList());
     }
-
+	
+	// 매출정보 미제공 가맹점
+	@Override
+	public List<String> compareId(){
+		return franchiseeRepository.findFranchiseeIdsNotInSales();
+	}
 	
 	// 아이디 찾기
 	@Override

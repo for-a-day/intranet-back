@@ -119,17 +119,27 @@ public class OrderAPIController {
 						
 						franchiseeEntity.setFranchiseeId(storeCode);
 						menuEntity.setMenu_id(menuCode);
+						
+						
+						// 중복 데이터 확인
+						if(orderService.existsByFranchiseeIdAndMenuIdAndOrderDate(franchiseeEntity, menuEntity, apiDate)){
+							System.out.println("중복된 데이터: franchiseeEntity=" + franchiseeEntity + ", menuEntity=" + menuEntity + ", apiDate=" + apiDate);
+	                        continue;
+						}
+							
+					System.err.println("franchiseeEntity의 id : " + storeCode);	
+					System.err.println("menuEntity의 id : " + menuCode);	
 					
 					System.err.println("franchiseeEntity의 id : " + storeCode);	
 					System.err.println("menuEntity의 id : " + menuCode);	
 						// order 엔티티 객체 생성 및 데이터 설정
 						OrderEntity order = new OrderEntity();
 						//order.setOrder_id(apiId);
-						order.setOrder_quantity(apiQuantity);
-						order.setOrder_price(apiPrice);
-						order.setOrder_date(apiDate);
-						order.setFranchisee_id(franchiseeEntity);
-						order.setMenu_id(menuEntity);
+						order.setOrderQuantity(apiQuantity);
+						order.setOrderPrice(apiPrice);
+						order.setOrderDate(apiDate);
+						order.setFranchiseeId(franchiseeEntity);
+						order.setMenuId(menuEntity);
 						
 					System.out.println("OrderEntity까지 통과");
 						OrderEntity savedOrderEntity = orderService.saveOrderData(order, storeCode, menuCode);
@@ -137,11 +147,11 @@ public class OrderAPIController {
 					System.err.println("저장까지 진행");
 					 	Map<String, Object> orderMap = new HashMap<>();
 					 	//orderMap.put("order_id", savedOrderEntity.getOrder_id());
-					 	orderMap.put("order_quantity", savedOrderEntity.getOrder_quantity());
-					 	orderMap.put("order_price", savedOrderEntity.getOrder_price());
-					 	orderMap.put("order_date", savedOrderEntity.getOrder_date());
-					 	orderMap.put("franchisee_id", savedOrderEntity.getFranchisee_id());
-					 	orderMap.put("menu_id", savedOrderEntity.getMenu_id());
+					 	orderMap.put("order_quantity", savedOrderEntity.getOrderQuantity());
+					 	orderMap.put("order_price", savedOrderEntity.getOrderPrice());
+					 	orderMap.put("order_date", savedOrderEntity.getOrderDate());
+					 	orderMap.put("franchisee_id", savedOrderEntity.getFranchiseeId());
+					 	orderMap.put("menu_id", savedOrderEntity.getMenuId());
 					 	orderResponseList.add(orderMap);
 				}
 					System.err.println("for문 탈출");

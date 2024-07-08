@@ -58,7 +58,12 @@ public class SalesServiceImpl implements SalesService {
 	    
 	    return sales;
 	}
-
+	
+	// api 중복 체크
+	@Override
+	public boolean existsByYearAndMonthAndStoreCode(int year, int month, FranchiseeEntity storeCode) {
+        return salesRepository.existsByYearAndMonthAndFranchiseeId(year, month, storeCode);
+    }
 	
 	// 목록
 	@Override

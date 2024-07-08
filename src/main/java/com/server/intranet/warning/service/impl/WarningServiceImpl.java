@@ -11,6 +11,7 @@ import com.server.intranet.closing.entity.ClosingEntity;
 import com.server.intranet.closing.repository.ClosingRepository;
 import com.server.intranet.franchisee.entity.FranchiseeEntity;
 import com.server.intranet.franchisee.repository.FranchiseeRepository;
+import com.server.intranet.warning.dto.WarningModDto;
 import com.server.intranet.warning.dto.WarningRequestDto;
 import com.server.intranet.warning.dto.WarningResponseDto;
 import com.server.intranet.warning.entity.WarningEntity;
@@ -66,7 +67,7 @@ public class WarningServiceImpl implements WarningService {
 	
 	// 수정
 	@Override
-	public List<WarningEntity> update(String franchisee_id, WarningRequestDto dto) throws Exception {
+	public List<WarningEntity> update(String franchisee_id, WarningModDto dto) throws Exception {
 		System.out.println("update 서비스 단 도착");
 		try {
 			System.err.println("update 서비스 try 문으로 입성");
@@ -102,7 +103,6 @@ public class WarningServiceImpl implements WarningService {
 			
 			for (WarningEntity warnings : warning) {
 					warnings.setFranchiseeId(franchisee);
-					warnings.setWarningReason(dto.getWarningReason());
 					warnings.setClosing_id(closing);
 			 }
 			
