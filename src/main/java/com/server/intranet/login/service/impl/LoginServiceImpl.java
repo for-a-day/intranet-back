@@ -28,17 +28,17 @@ public class LoginServiceImpl {
 
         if (employeeEntityOptional.isPresent()) {
             EmployeeEntity employee = employeeEntityOptional.get();
-
             if (bCryptPasswordEncoder.matches(employeePassword, employee.getEmployeePassword())) {
                 Map<String, Object> claims = new HashMap<>();
-                claims.put("roles", employee.getAuthority().getAuthorityName());
+                claims.put("sub", employee.getEmployeeId().toString());
 
-                String token = jwtUtil.generateToken(String.valueOf(employeeId), claims);
+                String accessToken = jwtUtil.generateAccessToken(claims);
+                String refreshToken = jwtUtil.generateRefreshToken(claims);
 
                 Map<String, Object> response = new HashMap<>();
-                response.put("token", token);
+                response.put("accessToken", accessToken);
+                response.put("refreshToken", refreshToken);
                 response.put("employee", employee);
-
                 return response;
             }
         }
