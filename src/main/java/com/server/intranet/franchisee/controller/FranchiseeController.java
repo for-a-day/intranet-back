@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.server.intranet.global.util.SecurityUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -46,7 +47,7 @@ public class FranchiseeController {
 	    response.put("data", franMap);
 	    response.put("message", "가맹점 목록 생성 완료");
 	    response.put("status", "success");
-	    
+		System.out.println(SecurityUtil.getCurrentUserId());
 	    return ResponseEntity.ok(response);
 	}
 	

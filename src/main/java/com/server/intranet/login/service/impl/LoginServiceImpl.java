@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class LoginServiceImpl {
@@ -32,12 +34,10 @@ public class LoginServiceImpl {
                 Map<String, Object> claims = new HashMap<>();
                 claims.put("sub", employee.getEmployeeId().toString());
 
-                String accessToken = jwtUtil.generateAccessToken(claims);
-                String refreshToken = jwtUtil.generateRefreshToken(claims);
+                String token = jwtUtil.generateToken(claims);
 
                 Map<String, Object> response = new HashMap<>();
-                response.put("accessToken", accessToken);
-                response.put("refreshToken", refreshToken);
+                response.put("token", token);
                 response.put("employee", employee);
                 return response;
             }

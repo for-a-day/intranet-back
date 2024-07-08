@@ -27,21 +27,13 @@ public class JwtUtil {
         this.secretKey = Keys.hmacShaKeyFor(decodedKey);
     }
 
-    public String generateToken(Map<String, Object> claims, long expirationTime) {
+    public String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 10)) // 1시간 유효기간
                 .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
-    }
-
-    public String generateAccessToken(Map<String, Object> claims) {
-        return generateToken(claims, 1000 * 60 * 60); // 1시간 유효기간
-    }
-
-    public String generateRefreshToken(Map<String, Object> claims) {
-        return generateToken(claims, 1000 * 60 * 60 * 24); // 1일 유효기간
     }
 
     public Claims parseToken(String token) {
@@ -49,10 +41,5 @@ public class JwtUtil {
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody();
-    }
-    
-    public Long extractEmployeeId(String token) {
-    	Claims claims = parseToken(token);
-    	return Long.parseLong(claims.getSubject());
     }
 }
