@@ -10,5 +10,9 @@ public interface ApprovalService {
     public List<ApprovalFormResponseDTO> selectFormList() throws Exception;
     public List<ApprovalFormResponseDTO> selectStorageList() throws Exception;
     public ApprovalResponseDTO createApproval(ApprovalRequestDTO requestDTO) throws Exception;
-    public ApprovalResponseDTO selectApprovalDetail(Long approvalId) throws Exception;
+    public List<ApprovalResponseDTO> selectApprovalList(String category) throws Exception;
+    public ApprovalResponseDTO selectApprovalDetail(Long approvalId, String type) throws Exception;
+    public ApprovalResponseDTO updateApproval(ApprovalRequestDTO requestDTO) throws Exception;
+    public Long updateApprovalCancel(ApprovalRequestDTO requestDTO) throws Exception;
+    public Long updateApprovalRejection(ApprovalRequestDTO requestDTO) throws Exception;
 }

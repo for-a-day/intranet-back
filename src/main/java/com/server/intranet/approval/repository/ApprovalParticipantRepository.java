@@ -22,4 +22,6 @@ import java.util.Optional;
  */
 public interface ApprovalParticipantRepository extends JpaRepository<ApprovalParticipant, Long> {
     List<ApprovalParticipant> findByApprovalId(ApprovalElectronic approvalId);
+
+    void deleteByApprovalId(ApprovalElectronic response);
 }

@@ -22,6 +22,7 @@ import java.util.List;
 public class ApprovalResponseDTO {
     private Long approvalId;
     private Long formId;
+    private Integer seq;
     private String formName;
     private String fileName;
     private Integer fileCount;
@@ -31,6 +32,7 @@ public class ApprovalResponseDTO {
     private String subject;
     private String urgency;
     private String docBody;
+    private String tempBody;
     private String category;
     private String approvalType;    //상세페이지 접속 때 기안자/결재자 구분
     private LocalDateTime creationDate;

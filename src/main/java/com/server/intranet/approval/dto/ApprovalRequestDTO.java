@@ -29,5 +29,8 @@ public class ApprovalRequestDTO {
     private String subject;
     private String urgency;
     private String docBody;
+    private String tempBody;
+    private String saveType;
+    private String approvalType;
     private List<Map<String,Object>> approvalInfo;
 }
