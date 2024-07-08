@@ -4,6 +4,7 @@ import com.server.intranet.approval.dto.ApprovalFormResponseDTO;
 import com.server.intranet.approval.dto.ApprovalRequestDTO;
 import com.server.intranet.approval.dto.ApprovalResponseDTO;
 import com.server.intranet.approval.service.impl.ApprovalServiceImpl;
+import com.server.intranet.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +20,22 @@ import java.util.Map;
 @RestController
 @RequestMapping("/app/approval")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class ApprovalController {
 
     private final ApprovalServiceImpl approvalService;
+
+    @GetMapping("")
+    public ResponseEntity<Map<String,Object>> selectApprovalMain() throws Exception{
+        System.out.println("전자 " + SecurityUtil.getCurrentUserId());
+        Map<String,Object> data = approvalService.selectApprovalMain();
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",data);
+        map.put("code", "SUCCESS");
+        map.put("msg", "조회가 완료되었습니다.");
+
+        return ResponseEntity.ok().body(map);
+    }
 
 
     /**

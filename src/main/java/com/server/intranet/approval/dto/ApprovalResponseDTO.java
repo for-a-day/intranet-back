@@ -33,6 +33,7 @@ public class ApprovalResponseDTO {
     private String urgency;
     private String docBody;
     private String tempBody;
+    private Integer docNo;
     private String category;
     private String approvalType;    //상세페이지 접속 때 기안자/결재자 구분
     private LocalDateTime creationDate;

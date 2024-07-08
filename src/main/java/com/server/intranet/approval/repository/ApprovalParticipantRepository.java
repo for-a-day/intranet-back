@@ -24,4 +24,6 @@ public interface ApprovalParticipantRepository extends JpaRepository<ApprovalPar
     List<ApprovalParticipant> findByApprovalId(ApprovalElectronic approvalId);
 
     void deleteByApprovalId(ApprovalElectronic response);
+
+    ApprovalParticipant findByApprovalIdAndType(ApprovalElectronic approvalId, String type);
 }
