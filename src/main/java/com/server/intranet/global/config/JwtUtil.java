@@ -50,4 +50,9 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
+    
+    public Long extractEmployeeId(String token) {
+    	Claims claims = parseToken(token);
+    	return Long.parseLong(claims.getSubject());
+    }
 }

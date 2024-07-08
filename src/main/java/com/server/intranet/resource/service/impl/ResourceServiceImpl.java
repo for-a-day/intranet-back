@@ -20,7 +20,6 @@ public class ResourceServiceImpl implements ResourceService {
     private final DepartmentRepository departmentRepository;
     private final AuthorityRepository authorityRepository;
     private final LevelRepository levelRepository;
-
     private final ExitEmployeeRepository exitEmployeeRepository;
 
 
@@ -181,4 +180,9 @@ public class ResourceServiceImpl implements ResourceService {
         }
 
     }
+    
+    public EmployeeEntity loginToken(Long employeeId) {
+    	return resourceRepository.findById(employeeId).orElse(null);
+    }
+    
 }

@@ -59,5 +59,5 @@ public class FranchiseeEntity {
 	
 	@Column(name = "warning_count", nullable = true) //경고 횟수
 	private int warningCount;
-
+	
 }

@@ -11,4 +11,5 @@ import com.server.intranet.closing.entity.ClosingEntity;
 public interface ClosingRepository extends JpaRepository<ClosingEntity, String> {
 	// 폐점 목록 화면
 	List<ClosingEntity> findAll();
+	ClosingEntity findByClosingId(String closingId);
 }

@@ -1,9 +1,12 @@
 package com.server.intranet.calendar.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import com.server.intranet.resource.entity.DepartmentEntity;
+import com.server.intranet.schedule.entity.ScheduleEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -50,6 +54,9 @@ public class CalendarEntity {
 	@JoinColumn(name = "DEPARTMENT_CODE")
 	private DepartmentEntity department;
 	
+	// 스케줄 리스트
+    @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ScheduleEntity> schedules;
 	
 	// 현재 시간 저장
     @PrePersist

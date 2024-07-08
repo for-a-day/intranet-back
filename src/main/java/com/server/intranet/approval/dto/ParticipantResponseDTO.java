@@ -28,7 +28,9 @@ public class ParticipantResponseDTO {
     private String type;
     private String status;
     private LocalDateTime approvalDate;
-    private String employeeName;
+    private String name;
     private Long departmentCode;
-    private String departmentName;
+    private String department;
+    private String level;
+    private boolean selectStatus; //결재정보 선택 상태
 }

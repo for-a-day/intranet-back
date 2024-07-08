@@ -46,6 +46,10 @@ public class ApprovalElectronic {
     @Column(name = "DOC_BODY", nullable = false, columnDefinition="TEXT")
     private String doc_body;
 
+    //임시내용
+    @Column(name = "TEMP_BODY", nullable = false, columnDefinition="TEXT")
+    private String temp_body;
+
     //결재 사유
     @Column(name = "REASON")
     private String reason;
@@ -62,9 +66,9 @@ public class ApprovalElectronic {
     @Column(name = "STATUS")
     private String status;
 
-    //pdf 변환 되었을 때 파일명
-    @Column(name = "FILE_NAME")
-    private String file;
+    //결재문서번호
+    @Column(name = "DOC_NO")
+    private Integer docNo;
 
     @CreatedDate
     @Column(name = "CREATION_DATE")

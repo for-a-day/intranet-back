@@ -1,5 +1,6 @@
 package com.server.intranet.calendar.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,8 @@ import com.server.intranet.calendar.service.CalendarService;
 import com.server.intranet.resource.entity.DepartmentEntity;
 import com.server.intranet.resource.repository.DepartmentRepository;
 
+import jakarta.annotation.PostConstruct;
+
 
 @Service
 public class CalendarServiceImpl implements CalendarService {
@@ -24,6 +27,42 @@ public class CalendarServiceImpl implements CalendarService {
 	
 	@Autowired
 	private DepartmentRepository departmentRepository;
+	
+	@PostConstruct
+    public void init() {
+		 if (departmentRepository.count() == 0) {
+	            // 부서 생성
+	            List<DepartmentEntity> departments = Arrays.asList(
+	                new DepartmentEntity(1L, "사장"),
+	                new DepartmentEntity(2L, "인사부"),
+	                new DepartmentEntity(3L, "기획부"),
+	                new DepartmentEntity(4L, "사업부"),
+	                new DepartmentEntity(5L, "물류부"),
+	                new DepartmentEntity(6L, "전산부")
+	            );
+	            departmentRepository.saveAll(departments);
+	        }
+
+        // 캘린더 생성
+        List<DepartmentEntity> departments = departmentRepository.findAll();
+        List<CalendarEntity> calendarsToCreate = departments.stream()
+            .filter(department -> calendarRepository.findByDepartment_DepartmentCode(department.getDepartmentCode()).isEmpty())
+            .map(department -> CalendarEntity.builder()
+                .CALENDAR_NAME(department.getDepartmentName() + " 업무 일정")
+                .department(department)
+                .build()
+            ).collect(Collectors.toList());
+
+        if (!calendarsToCreate.isEmpty()) {
+            calendarRepository.saveAll(calendarsToCreate);
+        }
+    }
+
+	
+	
+	
+	
+	
 	
 	@Override
 	public CalendarEntity createCalendar(CalendarCreateRequestDTO calendarRequestDTO) {

@@ -35,15 +35,10 @@ public class ApprovalParticipant {
     @ManyToOne
     @JoinColumn(name = "APPROVAL_ID")
     private ApprovalElectronic approvalId;
-    
-//    사원테이블 생성 시 추가할 예정
+
     @ManyToOne
     @JoinColumn(name = "EMPLOYEE_ID")
     private EmployeeEntity employeeId;
-
-//    @ManyToOne
-//    @JoinColumn(name = "EMPLOYEE_ID")
-//    private ApprovalForm formId;
 
     @Column(name = "SEQUENCE")
     private Integer seq;

@@ -79,13 +79,28 @@ public class FranchiseeController {
 	}
 	
 	//삭제
-	@DeleteMapping("/store/{franchiseeId}")
-	public ResponseEntity<Map<String, Object>> delete(@PathVariable String franchiseeId){
-		franchiseeService.delete(franchiseeId);
+	@DeleteMapping("/store/{franchisee_id}")
+	public ResponseEntity<Map<String, Object>> delete(@PathVariable String franchisee_id){
+		franchiseeService.delete(franchisee_id);
 		Map<String, Object> response = new HashMap<>();
 		response.put("status", "success");
         response.put("message", "Franchisee deleted successfully.");
         return ResponseEntity.ok(response);
 	}
+	
+    // 매출 api 안 보낸 가맹점 찾기
+    @GetMapping("/store/compare")
+    public ResponseEntity<Map<String, Object>> compareId(){
+        // 가맹점 데이터베이스에는 있지만 판매 데이터베이스에는 없는 franchiseeId 찾기
+        List<String> franchiseeIds = franchiseeService.compareId();
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("franchiseeIdsNotInSales", franchiseeIds);
+        response.put("count", franchiseeIds.size());
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
 	
 }
