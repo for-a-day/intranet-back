@@ -136,7 +136,25 @@ public class ResourceServiceImpl implements ResourceService {
         try {
             EmployeeEntity employeeEntity = resourceRepository.findById(employeeId).orElse(null);
             if (employeeEntity != null) {
-                BeanUtils.copyProperties(employeeDTO, employeeEntity);
+                // 기존의 기본 필드들을 복사
+                employeeEntity.setName(employeeDTO.getName());
+                employeeEntity.setGender(employeeDTO.getGender());
+                employeeEntity.setBirth(employeeDTO.getBirth());
+                employeeEntity.setDateEmployment(employeeDTO.getDateEmployment());
+                employeeEntity.setContact(employeeDTO.getContact());
+                employeeEntity.setAddress(employeeDTO.getAddress());
+                employeeEntity.setEmailAddress(employeeDTO.getEmailAddress());
+                employeeEntity.setEmploymentStatus(employeeDTO.getEmploymentStatus());
+
+                // 관계 엔티티들을 설정
+                LevelEntity levelEntity = levelRepository.findById(employeeDTO.getLevelCode()).orElse(null);
+                DepartmentEntity departmentEntity = departmentRepository.findById(employeeDTO.getDepartmentCode()).orElse(null);
+                AuthorityEntity authorityEntity = authorityRepository.findById(employeeDTO.getAuthorityCode()).orElse(null);
+
+                employeeEntity.setLevel(levelEntity);
+                employeeEntity.setDepartment(departmentEntity);
+                employeeEntity.setAuthority(authorityEntity);
+
                 resourceRepository.save(employeeEntity);
                 return true;
             } else {
@@ -147,6 +165,7 @@ public class ResourceServiceImpl implements ResourceService {
             return false;
         }
     }
+
 
 
     public boolean registerExitEmployee(ExitEmployeeRequestDTO exitEmployeeRequestDTO) {
