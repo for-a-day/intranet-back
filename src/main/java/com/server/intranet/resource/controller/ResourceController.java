@@ -29,9 +29,6 @@ public class ResourceController {
 
     @GetMapping("/list")
     public ResponseEntity<Map<String, Object>> getAllEmployeesWithDetails() {
-        if (!isHRDepartment()) {
-            return ResponseEntity.status(403).body(null); // 접근 금지 상태 반환
-        }
 
         List<ResourceResponseDTO> employees = resourceServiceImpl.getAllEmployees();
         List<DepartmentResponseDTO> departments = resourceServiceImpl.getAllDepartments();
