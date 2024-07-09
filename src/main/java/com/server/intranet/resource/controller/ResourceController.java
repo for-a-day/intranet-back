@@ -92,7 +92,6 @@ public class ResourceController {
 
         Map<String, Object> response = new HashMap<>();
 
-        System.out.println("뭔데~~~~~~~~₩" + employeeDTO.toString());
         if (isUpdated) {
             return ResponseEntity.ok(response);
         } else {
