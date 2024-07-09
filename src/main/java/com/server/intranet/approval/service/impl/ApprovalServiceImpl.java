@@ -235,7 +235,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         List<ApprovalElectronic> approvalList = new ArrayList<>();
 
         switch (category) {
-            case "draft":
+            case "mydraft":
                 // 기안 문서함(내가 결재 신청한 기안문 목록)
                 approvalList = approvalRepository.findByApprovalIdAndDraft(employeeId, "기안");
                 break;
@@ -444,9 +444,13 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Transactional
     public Long updateApprovalCancel(ApprovalRequestDTO requestDTO) throws Exception {
         ApprovalElectronic approval = approvalRepository.findById(requestDTO.getApprovalId()).orElseThrow();
-        approval.setStatus("T");
-        approval.setDoc_body("docBody");
-        return approvalRepository.save(approval).getApprovalId();
+        if(approval.getStatus().equals("1")){
+            approval.setStatus("T");
+            approval.setDoc_body("docBody");
+            return approvalRepository.save(approval).getApprovalId();
+        } else {
+            return null;
+        }
     }
 
     // 결재 및 반려
