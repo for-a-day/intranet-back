@@ -137,6 +137,19 @@ public class ResourceController {
         }
     }
 
+    @PutMapping("/update-password")
+    public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO) {
+        boolean isUpdated = resourceServiceImpl.updatePassword(updatePasswordDTO);
+        Map<String, Object> response = new HashMap<>();
+        if (isUpdated) {
+            response.put("message", "Password updated successfully.");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("message", "Current password is incorrect.");
+            return ResponseEntity.status(400).body(response);
+        }
+    }
+
     @GetMapping("/current")
     public ResponseEntity<Map<String, String>> getCurrentUserInfo() {
         Map<String, String> currentUserInfo = new HashMap<>();

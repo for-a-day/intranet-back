@@ -199,7 +199,20 @@ public class ResourceServiceImpl implements ResourceService {
         }
 
     }
-    
+
+    public boolean updatePassword(UpdatePasswordDTO updatePasswordDTO) {
+        EmployeeEntity employee = resourceRepository.findById(updatePasswordDTO.getEmployeeId()).orElse(null);
+
+        if (employee != null && bCryptPasswordEncoder.matches(updatePasswordDTO.getCurrentPassword(), employee.getEmployeePassword())) {
+            String encryptedNewPassword = bCryptPasswordEncoder.encode(updatePasswordDTO.getNewPassword());
+            employee.setEmployeePassword(encryptedNewPassword);
+            resourceRepository.save(employee);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public EmployeeEntity loginToken(Long employeeId) {
     	return resourceRepository.findById(employeeId).orElse(null);
     }
