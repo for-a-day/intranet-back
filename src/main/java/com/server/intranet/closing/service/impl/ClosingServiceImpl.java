@@ -3,6 +3,7 @@ package com.server.intranet.closing.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.antlr.v4.runtime.ParserInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,8 @@ public class ClosingServiceImpl implements ClosingService{
 			closing.setWarningCount(dto.getWarningCount());
 			closing.setClosingDate(dto.getClosingDate());
 			closing.setClosingReason(dto.getClosingReason());
-			
+			closing.setEmployeeId(Long.parseLong(dto.getEmployeeId()));
+			System.err.println("closing은? " + closing);
 			return closingRepository.save(closing);
 		} catch (Exception e) {
 			e.printStackTrace();

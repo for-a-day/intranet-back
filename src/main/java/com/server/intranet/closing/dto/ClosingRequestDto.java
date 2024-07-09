@@ -31,7 +31,7 @@ public class ClosingRequestDto {
     // 폐점일자
     private Date closingDate;
     @Nullable// 담당자명
-    private Long employeeId;
+    private String employeeId;
     // 폐점 사유
     private String closingReason;
 	
