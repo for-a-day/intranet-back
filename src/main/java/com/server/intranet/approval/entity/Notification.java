@@ -31,6 +31,8 @@ public class Notification {
 
     private boolean isRead;
 
+    private boolean isView;
+
     @CreatedDate
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -40,5 +42,9 @@ public class Notification {
 
     public void read() {
         this.isRead = true;
+    }
+
+    public void view() {
+        this.isView = true;
     }
 }

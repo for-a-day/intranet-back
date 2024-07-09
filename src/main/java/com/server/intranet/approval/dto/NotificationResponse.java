@@ -33,12 +33,18 @@ public class NotificationResponse {
      */
     private boolean read;
 
+    /**
+     * 보여 준 여부
+     */
+    private boolean view;
+
     @Builder
-    public NotificationResponse(Long id, String content, String url, boolean read) {
+    public NotificationResponse(Long id, String content, String url, boolean read, boolean view) {
         this.id = id;
         this.content = content;
         this.url = url;
         this.read = read;
+        this.view = view;
     }
 
     public static NotificationResponse from(Notification notification) {
@@ -47,6 +53,7 @@ public class NotificationResponse {
                 .content(notification.getContent())
                 .url(notification.getUrl())
                 .read(notification.isRead())
+                .view(notification.isView())
                 .build();
     }
 }
