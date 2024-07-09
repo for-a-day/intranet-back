@@ -150,6 +150,8 @@ public class ResourceController {
     public ResponseEntity<Map<String, String>> getCurrentUserInfo() {
         Map<String, String> currentUserInfo = new HashMap<>();
         currentUserInfo.put("department", SecurityUtil.getCurrentUserDepartmentName());
+        Long departmentCode = SecurityUtil.getCurrentUserDepartmentCode();
+        currentUserInfo.put("departmentCode", (departmentCode != null) ? departmentCode.toString() : null);
         currentUserInfo.put("name", SecurityUtil.getCurrentUserName());
         currentUserInfo.put("level", SecurityUtil.getCurrentUserLevelName());
         currentUserInfo.put("id", SecurityUtil.getCurrentUserId());
@@ -161,7 +163,9 @@ public class ResourceController {
         currentUserInfo.put("emailAddress", SecurityUtil.getCurrentUserEmailAddress());
         currentUserInfo.put("employmentStatus", SecurityUtil.getCurrentUserEmploymentStatus());
 
+        System.out.println("뭐야"+ currentUserInfo);
         return ResponseEntity.ok(currentUserInfo);
+        
     }
 
 }

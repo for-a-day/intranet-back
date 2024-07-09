@@ -39,6 +39,11 @@ public class SecurityUtil {
         EmployeeEntity employee = getCurrentEmployee();
         return (employee != null) ? employee.getDepartment().getDepartmentName() : null;
     }
+    
+    public static Long getCurrentUserDepartmentCode() { // 부서코드 반환 메소드 추가
+        EmployeeEntity employee = getCurrentEmployee();
+        return (employee != null) ? employee.getDepartment().getDepartmentCode() : null;
+    }
 
     public static String getCurrentUserName() {
         EmployeeEntity employee = getCurrentEmployee();
