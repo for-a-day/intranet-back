@@ -189,7 +189,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 
             saveApprovalParticipant(response, participantEmployeeId, seq, type, status);
         }
-        if(waitEmployeeId != null){
+        if(waitEmployeeId != null && !requestDTO.getSaveType().equals("T")){
             EmployeeEntity employee = resourceRepository.findById(waitEmployeeId).orElseThrow();
             notificationServiceImpl.send(employee, "/approval/draft/detail/"+ response.getApprovalId() , "' " + response.getSubject() + " ' 결재 요청이 들어왔습니다." );
         }
@@ -298,7 +298,6 @@ public class ApprovalServiceImpl implements ApprovalService {
     public ApprovalResponseDTO selectApprovalDetail(Long approvalId, String type) throws Exception {
         //jwt토큰 작업 완료되면 수정 예정
         Long employeeId = Long.valueOf(Objects.requireNonNull(SecurityUtil.getCurrentUserId()));
-        System.out.println("상세조회 아이디: " + employeeId);
         String approvalType = "";
         Integer seq = 0;
 //        boolean foundType = false;
@@ -409,7 +408,7 @@ public class ApprovalServiceImpl implements ApprovalService {
             saveApprovalParticipant(response, participantEmployeeId, seq, type, status);
         }
 
-        if(waitEmployeeId != null){
+        if(waitEmployeeId != null && !requestDTO.getSaveType().equals("T")){
             EmployeeEntity employee = resourceRepository.findById(waitEmployeeId).orElseThrow();
             notificationServiceImpl.send(employee, "/approval/draft/detail/"+ response.getApprovalId() , "' " + response.getSubject() + " ' 결재 요청이 들어왔습니다." );
         }
@@ -492,7 +491,9 @@ public class ApprovalServiceImpl implements ApprovalService {
             approvalDoc.setStatus("C");
             approvalDoc.setDoc_body(docBody);
             Integer maxNo = approvalRepository.maxDocNo();
-            System.out.println(maxNo);
+            if(maxNo == null){
+                maxNo = 0;
+            }
             approvalDoc.setDocNo(maxNo + 1);
             waitEmployeeId = participantList.get(0).getEmployeeId().getEmployeeId();
             content = "' " + approvalDoc.getSubject() + " ' 승인 되었습니다.";

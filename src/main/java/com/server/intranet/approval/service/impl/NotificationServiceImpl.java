@@ -81,6 +81,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .content(content)
                 .url(url)
                 .isRead(false)
+                .isView(false)
                 .build();
     }
 
@@ -98,9 +99,15 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Transactional
     public void readNotification(Long id) {
-        System.out.println("들어옴4?");
         Notification notification = notificationRepository.findById(id)
                 .orElseThrow();
         notification.read();
+    }
+
+    @Transactional
+    public void viewNotification(Long id) {
+        Notification notification = notificationRepository.findById(id)
+                .orElseThrow();
+        notification.view();
     }
 }

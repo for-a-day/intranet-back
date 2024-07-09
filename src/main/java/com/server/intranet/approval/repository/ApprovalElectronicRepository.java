@@ -36,13 +36,12 @@ public interface ApprovalElectronicRepository extends JpaRepository<ApprovalElec
     List<ApprovalElectronic> findByApprovalIdAndSchedule( @Param("employeeId") Long employeeId, @Param("type") String type);
 
     //메인 페이지 내가 처리해야할 결재 대기(오름차순)
-    @Query(value = "SELECT DISTINCT e.* FROM electronic_approval e JOIN approval_participant a ON e.approval_id = a.approval_id WHERE (e.status = a.sequence AND a.employee_id = :employeeId AND a.type = '결재') OR e.urgency = 1 ORDER BY e.urgency DESC, e.approval_id LIMIT 5;" , nativeQuery = true)
+    @Query(value = "SELECT DISTINCT e.* FROM electronic_approval e JOIN approval_participant a ON e.approval_id = a.approval_id WHERE e.status = a.sequence AND a.employee_id = :employeeId AND a.type = '결재' ORDER BY e.urgency DESC, e.approval_id LIMIT 5;" , nativeQuery = true)
     List<ApprovalElectronic> findByMainAndTodo(@Param("employeeId") Long employeeId);
 
     //메인 페이지 내가 올린 기안문 중 진행중 상태(내림차순)
     @Query(value = "SELECT e.* FROM electronic_approval e JOIN approval_participant a ON e.approval_id = a.approval_id WHERE a.employee_id = :employeeId AND a.type = '기안' AND e.status NOT IN ('T', 'C', 'R') ORDER BY e.approval_id DESC LIMIT 5;" , nativeQuery = true)
     List<ApprovalElectronic> findByMainAndDraftProgress(@Param("employeeId") Long employeeI);
-
 
     //메인 페이지 내가 올린 기안문 중 완료되 상태(내림차순)
     @Query(value = "SELECT e.* FROM electronic_approval e JOIN approval_participant a ON e.approval_id = a.approval_id WHERE a.employee_id = :employeeId AND a.type = '기안' AND e.status IN ('C') ORDER BY e.approval_id DESC LIMIT 5;" , nativeQuery = true)

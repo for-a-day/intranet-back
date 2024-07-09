@@ -51,9 +51,15 @@ public class ApprovalController {
         List<ApprovalFormResponseDTO> formList = approvalService.selectFormList();
         List<ApprovalFormResponseDTO> storageList = approvalService.selectStorageList();
 
+        Map<String,Object> employee = new HashMap<>();
+        employee.put("department",SecurityUtil.getCurrentUserDepartmentName());
+        employee.put("name",SecurityUtil.getCurrentUserName());
+        employee.put("level", SecurityUtil.getCurrentUserLevelName());
+
         Map<String, Object> data = new HashMap<>();
         data.put("formList", formList);
         data.put("storageList", storageList);
+        data.put("employee", employee);
 
         Map<String, Object> map = new HashMap<>();
         map.put("data",data);
@@ -118,7 +124,16 @@ public class ApprovalController {
      */
     @GetMapping("/draft/doc/{approvalId}")
     public ResponseEntity<Map<String,Object>> selectApprovalDetail(@PathVariable("approvalId") Long approvalId, @RequestParam(value = "type", required = false) String type) throws Exception{
-        ApprovalResponseDTO data = approvalService.selectApprovalDetail(approvalId, type);
+        ApprovalResponseDTO approval = approvalService.selectApprovalDetail(approvalId, type);
+
+        Map<String,Object> employee = new HashMap<>();
+        employee.put("department",SecurityUtil.getCurrentUserDepartmentName());
+        employee.put("name",SecurityUtil.getCurrentUserName());
+        employee.put("level", SecurityUtil.getCurrentUserLevelName());
+
+        Map<String,Object> data = new HashMap<>();
+        data.put("approval", approval);
+        data.put("employee", employee);
 
         Map<String, Object> map = new HashMap<>();
         map.put("data", data);
