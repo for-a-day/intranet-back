@@ -37,11 +37,22 @@ public class ApprovalServiceImpl implements ApprovalService {
     private final ApprovalElectronicRepository approvalRepository;
     //기안자/결재자/합의자 레포지토리
     private final ApprovalParticipantRepository participantRepository;
-
+    //인사 레포지토리
     private final ResourceRepository resourceRepository;
-
-    //새로추가 알림
+    //알림 레포지토리
     private final NotificationServiceImpl notificationServiceImpl;
+
+    //인트라넷 메인 페이지 내가 올린 기안문 조회
+    @Override
+    public Map<String, Object> selectMainDraftList() throws Exception {
+        Long employeeId = Long.valueOf(Objects.requireNonNull(SecurityUtil.getCurrentUserId()));
+
+        List<ApprovalElectronic> list = approvalRepository.findByDraft(employeeId);
+        Map<String,Object> data = new HashMap<>();
+        data.put("list", list);
+
+        return data;
+    }
 
     //전자결재 메인 조회
     @Override
