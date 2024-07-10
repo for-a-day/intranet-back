@@ -55,6 +55,10 @@ public class ScheduleEntity {
 	@Column(name = "END_DATE")
 	private Date END_DATE;
 	
+	// 작성자
+	@Column(name = "WRITER")
+	private String WRITER;
+	
 	@Column(name = "START_TIME")
 	private Time START_TIME;
 	
