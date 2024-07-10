@@ -26,6 +26,26 @@ public class ApprovalController {
     private final ApprovalServiceImpl approvalService;
 
     /**
+     * methodName : selectMainDraftList
+     * author : YunJae Lee
+     * description : 인트라넷 메인 페이지 내가 올린 기안문 조회
+     *
+     * @return response entity
+     * @throws Exception the exception
+     */
+    @GetMapping("/my-draft")
+    public ResponseEntity<Map<String,Object>> selectMainDraftList() throws Exception{
+        Map<String,Object> data = approvalService.selectMainDraftList();
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",data);
+        map.put("code", "SUCCESS");
+        map.put("msg", "조회가 완료되었습니다.");
+
+        return ResponseEntity.ok().body(map);
+    }
+
+    /**
      * methodName : selectApprovalMain
      * author : YunJae Lee
      * description :
@@ -35,7 +55,6 @@ public class ApprovalController {
      */
     @GetMapping("")
     public ResponseEntity<Map<String,Object>> selectApprovalMain() throws Exception{
-        System.out.println("전자 " + SecurityUtil.getCurrentUserId());
         Map<String,Object> data = approvalService.selectApprovalMain();
         Map<String,Object> map = new HashMap<>();
         map.put("data",data);

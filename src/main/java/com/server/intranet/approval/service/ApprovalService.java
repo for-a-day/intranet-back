@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ApprovalService {
+    public Map<String,Object> selectMainDraftList() throws Exception;
     public Map<String,Object> selectApprovalMain() throws Exception;
     public List<ApprovalFormResponseDTO> selectFormList() throws Exception;
     public List<ApprovalFormResponseDTO> selectStorageList() throws Exception;
