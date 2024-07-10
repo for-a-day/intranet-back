@@ -38,6 +38,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 				.START_TIME(createRequestDTO.getStartTime())
 				.END_TIME(createRequestDTO.getEndTime())
 				.LOCATION(createRequestDTO.getLocation())
+				.WRITER(createRequestDTO.getWriter())
 				.build();
 		scheduleRepository.save(schedule);
 	}
@@ -56,7 +57,8 @@ public class ScheduleServiceImpl implements ScheduleService{
 				schedule.getEND_DATE(),
 				schedule.getSTART_TIME(),
 				schedule.getEND_TIME(),
-				schedule.getLOCATION()
+				schedule.getLOCATION(),
+				schedule.getWRITER()
 		)).collect(Collectors.toList());
 	}
 	
@@ -74,6 +76,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 			listResponseDTO.setStartTime(schedule.getSTART_TIME());
 			listResponseDTO.setEndTime(schedule.getEND_TIME());
 			listResponseDTO.setLocation(schedule.getLOCATION());
+			listResponseDTO.setWriter(schedule.getWRITER());
 			return listResponseDTO;
 		}).collect(Collectors.toList());
 	}
@@ -89,6 +92,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 			schedule.setSTART_TIME(requestDTO.getStartTime());
 			schedule.setEND_TIME(requestDTO.getEndTime());
 			schedule.setLOCATION(requestDTO.getLocation());
+			schedule.setWRITER(requestDTO.getWriter());
 			scheduleRepository.save(schedule);
 			return 1;
 		} else {

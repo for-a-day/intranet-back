@@ -20,11 +20,11 @@ public class ScheduleListResponseDTO {
 	
 	@NonNull
 	private String subject;
-	
 	private String content;
 	private Date startDate;
 	private Date endDate;
 	private Time startTime;
 	private Time endTime;
 	private String location;
+	private String writer;
 }
