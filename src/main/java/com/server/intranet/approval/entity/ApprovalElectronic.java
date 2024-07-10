@@ -71,7 +71,7 @@ public class ApprovalElectronic {
     private Integer docNo;
 
     @CreatedDate
-    @Column(name = "CREATION_DATE")
+    @Column(name = "CREATION_DATE", updatable = false)
     private LocalDateTime creationDate;
 
     @LastModifiedDate

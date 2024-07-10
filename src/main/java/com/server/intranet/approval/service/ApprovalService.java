@@ -17,4 +17,5 @@ public interface ApprovalService {
     public ApprovalResponseDTO updateApproval(ApprovalRequestDTO requestDTO) throws Exception;
     public Long updateApprovalCancel(ApprovalRequestDTO requestDTO) throws Exception;
     public Long updateApprovalRejection(ApprovalRequestDTO requestDTO) throws Exception;
+    public void deleteApproval(Long id) throws Exception;
 }

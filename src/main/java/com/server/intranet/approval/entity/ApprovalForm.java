@@ -58,7 +58,7 @@ public class ApprovalForm {
     private String preApproval;
 
     @CreatedDate
-    @Column(name = "CREATION_DATE")
+    @Column(name = "CREATION_DATE", updatable = false)
     private LocalDateTime creationDate;
 
     @LastModifiedDate

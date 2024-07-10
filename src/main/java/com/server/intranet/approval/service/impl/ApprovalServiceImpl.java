@@ -191,7 +191,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         }
         if(waitEmployeeId != null && !requestDTO.getSaveType().equals("T")){
             EmployeeEntity employee = resourceRepository.findById(waitEmployeeId).orElseThrow();
-            notificationServiceImpl.send(employee, "/approval/draft/detail/"+ response.getApprovalId() , "' " + response.getSubject() + " ' 결재 요청이 들어왔습니다." );
+            notificationServiceImpl.send(employee, "/approval/draft/detail/"+ response.getApprovalId() + "?a=a", "[ " + response.getSubject() + " ] 결재 요청이 들어왔습니다." );
         }
         return ApprovalResponseDTO.builder()
                 .approvalId(response.getApprovalId())
@@ -233,7 +233,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         Long employeeId = Long.valueOf(Objects.requireNonNull(SecurityUtil.getCurrentUserId()));
         //employeeId 대신 부서 코드가 들어가야함
         List<ApprovalElectronic> approvalList = new ArrayList<>();
-
+        String approvalType = null;
         switch (category) {
             case "mydraft":
                 // 기안 문서함(내가 결재 신청한 기안문 목록)
@@ -250,7 +250,7 @@ public class ApprovalServiceImpl implements ApprovalService {
             case "approval":
                 // 추가적인 작업 필요!!!! - 내가 결재를 진행해야 나타나게 해야함? 아니면 나한테 들어온 결재를 완료 했지만 결재 진행중인 상태
                 // 결재 완료 문서함(내가 결재한 문서 중 반려 or 결재 처리 한 문서함)
-                approvalList = approvalRepository.findByApprovalIdAndTA("C", employeeId, "결재");
+                approvalList = approvalRepository.findByApprovalIdAndProcess(employeeId, "결재");
                 break;
             case "todo":
                 // 결재 대기 문서함(내가 결재할 문서 중 대기 상태인 문서함)
@@ -268,6 +268,13 @@ public class ApprovalServiceImpl implements ApprovalService {
 
         List<ApprovalResponseDTO> list = new ArrayList<>();
         for (ApprovalElectronic approval : approvalList) {
+            if(approval.getStatus().equals("C")){
+                approvalType = "완료";
+            } else if(approval.getStatus().equals("R")){
+                approvalType = "반려";
+            } else {
+                approvalType = "진행중";
+            }
             ApprovalResponseDTO response = ApprovalResponseDTO.builder()
                     .approvalId(approval.getApprovalId())
                     .formId(approval.getFormId().getFormId())
@@ -275,7 +282,9 @@ public class ApprovalServiceImpl implements ApprovalService {
                     .subject(approval.getSubject())
                     .fileCount(0)    //file테이블이랑 연돟해서 가져와야 함
                     .status(approval.getStatus())
-                    .creationDate(approval.getModificationDate())
+                    .creationDate(approval.getCreationDate())
+                    .modificationDate(approval.getModificationDate())
+                    .approvalType(approvalType)
                     .docNo(approval.getDocNo())
                     .urgency(approval.getUrgency())
                     .build();
@@ -296,11 +305,10 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     @Transactional
     public ApprovalResponseDTO selectApprovalDetail(Long approvalId, String type) throws Exception {
-        //jwt토큰 작업 완료되면 수정 예정
         Long employeeId = Long.valueOf(Objects.requireNonNull(SecurityUtil.getCurrentUserId()));
         String approvalType = "";
         Integer seq = 0;
-//        boolean foundType = false;
+
         ApprovalElectronic response = approvalRepository.findById(approvalId).orElseThrow();
         List<ApprovalParticipant> participantList = participantRepository.findByApprovalId(response);
         List<ParticipantResponseDTO> list = new ArrayList<>();
@@ -410,7 +418,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 
         if(waitEmployeeId != null && !requestDTO.getSaveType().equals("T")){
             EmployeeEntity employee = resourceRepository.findById(waitEmployeeId).orElseThrow();
-            notificationServiceImpl.send(employee, "/approval/draft/detail/"+ response.getApprovalId() , "' " + response.getSubject() + " ' 결재 요청이 들어왔습니다." );
+            notificationServiceImpl.send(employee, "/approval/draft/detail/"+ response.getApprovalId() + "?a=a" , "[ " + response.getSubject() + " ] 결재 요청이 들어왔습니다." );
         }
 
         return ApprovalResponseDTO.builder()
@@ -448,7 +456,7 @@ public class ApprovalServiceImpl implements ApprovalService {
             approval.setDoc_body("docBody");
             return approvalRepository.save(approval).getApprovalId();
         } else {
-            return null;
+            return 10L;
         }
     }
 
@@ -482,7 +490,7 @@ public class ApprovalServiceImpl implements ApprovalService {
             } else if (participant.getSeq() == currentStatus + 1) {
                 participant.setStatus("대기");
                 waitEmployeeId = participant.getEmployeeId().getEmployeeId();
-                content = "' " + approvalDoc.getSubject() + " ' 결재 요청이 들어왔습니다.";
+                content = "[ " + approvalDoc.getSubject() + " ] 결재 요청이 들어왔습니다.";
             }
             participantRepository.save(participant);
         }
@@ -496,7 +504,7 @@ public class ApprovalServiceImpl implements ApprovalService {
             }
             approvalDoc.setDocNo(maxNo + 1);
             waitEmployeeId = participantList.get(0).getEmployeeId().getEmployeeId();
-            content = "' " + approvalDoc.getSubject() + " ' 승인 되었습니다.";
+            content = "[ " + approvalDoc.getSubject() + " ] 승인 되었습니다.";
         } else if (currentStatus < (participantList.size() - 1)) {
             approvalDoc.setStatus(String.valueOf(currentStatus + 1));
             approvalDoc.setDoc_body(docBody);
@@ -505,14 +513,14 @@ public class ApprovalServiceImpl implements ApprovalService {
 
         if(waitEmployeeId != null){
             EmployeeEntity employee = resourceRepository.findById(waitEmployeeId).orElseThrow();
-            notificationServiceImpl.send(employee, "/approval/draft/detail/"+ approvalDoc.getApprovalId() , content );
+            notificationServiceImpl.send(employee, "/approval/draft/detail/"+ approvalDoc.getApprovalId() + "?a=a" , content );
         }
     }
 
     //반려시 실행될 함수
     private void rejectParticipants(List<ApprovalParticipant> participantList, Long employeeId, ApprovalElectronic approvalDoc, String docBody, String  reason) {
         Long waitEmployeeId = participantList.get(0).getEmployeeId().getEmployeeId();
-        String content = "' " + approvalDoc.getSubject() + " ' 반려 되었습니다.";
+        String content = "[ " + approvalDoc.getSubject() + " ] 반려 되었습니다.";
         for (ApprovalParticipant participant : participantList) {
             if (participant.getEmployeeId().getEmployeeId().equals(employeeId)) {
                 participant.setStatus("반려");
@@ -525,7 +533,15 @@ public class ApprovalServiceImpl implements ApprovalService {
         approvalRepository.save(approvalDoc);
 
         EmployeeEntity employee = resourceRepository.findById(waitEmployeeId).orElseThrow();
-        notificationServiceImpl.send(employee, "/approval/draft/detail/"+ approvalDoc.getApprovalId() , content );
+        notificationServiceImpl.send(employee, "/approval/draft/detail/"+ approvalDoc.getApprovalId() + "?a=a" , content );
     }
 
+    //기안문 삭제
+    @Override
+    @Transactional
+    public void deleteApproval(Long id) throws Exception {
+        ApprovalElectronic approval = approvalRepository.findById(id).orElseThrow();
+        approval.setStatus("H");
+        approvalRepository.save(approval);
+    }
 }

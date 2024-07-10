@@ -99,15 +99,22 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Transactional
     public void readNotification(Long id) {
-        Notification notification = notificationRepository.findById(id)
-                .orElseThrow();
+        Notification notification = notificationRepository.findById(id).orElseThrow();
         notification.read();
     }
 
     @Transactional
     public void viewNotification(Long id) {
-        Notification notification = notificationRepository.findById(id)
-                .orElseThrow();
+        Notification notification = notificationRepository.findById(id).orElseThrow();
         notification.view();
+    }
+
+    @Transactional
+    public void readNotificationAll(Long id) {
+        Notification notification = notificationRepository.findById(id).orElseThrow();
+        List<Notification> notificationList = notificationRepository.findByEmployeeId(notification.getEmployeeId());
+        for(Notification notice : notificationList){
+            notice.read();
+        }
     }
 }
