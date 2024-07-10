@@ -63,4 +63,16 @@ public class NotificationController {
 
         return ResponseEntity.ok().body(map);
     }
+
+    //알림 모두 읽음
+    @PostMapping("/app/auth/notice/{id}")
+    public ResponseEntity<Map<String,Object>> readNotificationAll(@PathVariable Long id) {
+        notificationServiceImpl.readNotificationAll(id);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", "SUCCESS");
+        map.put("msg", "모두 읽음처리 되었습니다");
+
+        return ResponseEntity.ok().body(map);
+    }
 }

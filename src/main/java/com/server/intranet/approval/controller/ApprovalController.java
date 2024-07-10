@@ -25,6 +25,14 @@ public class ApprovalController {
 
     private final ApprovalServiceImpl approvalService;
 
+    /**
+     * methodName : selectApprovalMain
+     * author : YunJae Lee
+     * description :
+     *
+     * @return response entity
+     * @throws Exception the exception
+     */
     @GetMapping("")
     public ResponseEntity<Map<String,Object>> selectApprovalMain() throws Exception{
         System.out.println("전자 " + SecurityUtil.getCurrentUserId());
@@ -127,6 +135,7 @@ public class ApprovalController {
         ApprovalResponseDTO approval = approvalService.selectApprovalDetail(approvalId, type);
 
         Map<String,Object> employee = new HashMap<>();
+        employee.put("id",SecurityUtil.getCurrentUserId());
         employee.put("department",SecurityUtil.getCurrentUserDepartmentName());
         employee.put("name",SecurityUtil.getCurrentUserName());
         employee.put("level", SecurityUtil.getCurrentUserLevelName());
@@ -178,9 +187,15 @@ public class ApprovalController {
         Long data = approvalService.updateApprovalCancel(requestDTO);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("data", data);
-        map.put("code", "SUCCESS");
-        map.put("msg", "저장이 완료되었습니다.");
+        if(data == 10L){
+            map.put("code", "FAIL");
+            map.put("msg", "이미 결재가 진행되었습니다.");
+        } else {
+            map.put("data",data);
+            map.put("code", "SUCCESS");
+            map.put("msg", "상신 취소가 완료되었습니다.");
+        }
+
 
         return ResponseEntity.ok().body(map);
     }
@@ -203,6 +218,26 @@ public class ApprovalController {
         map.put("data", data);
         map.put("code", "SUCCESS");
         map.put("msg", "저장이 완료되었습니다.");
+
+        return ResponseEntity.ok().body(map);
+    }
+
+    /**
+     * methodName : deleteApproval
+     * author : YunJae Lee
+     * description : 기안문 삭제
+     *
+     * @param id
+     * @return response entity
+     * @throws Exception the exception
+     */
+    @DeleteMapping("/draft/doc/{id}")
+    public ResponseEntity<Map<String,Object>> deleteApproval(@PathVariable("id") Long id) throws Exception{
+        approvalService.deleteApproval(id);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", "SUCCESS");
+        map.put("msg", "삭제가 완료되었습니다.");
 
         return ResponseEntity.ok().body(map);
     }
