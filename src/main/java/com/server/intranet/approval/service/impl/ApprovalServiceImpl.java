@@ -48,8 +48,10 @@ public class ApprovalServiceImpl implements ApprovalService {
         Long employeeId = Long.valueOf(Objects.requireNonNull(SecurityUtil.getCurrentUserId()));
 
         List<ApprovalElectronic> list = approvalRepository.findByDraft(employeeId);
+        Integer count = approvalRepository.findByDraftCount((employeeId));
         Map<String,Object> data = new HashMap<>();
         data.put("list", list);
+        data.put("count", count);
 
         return data;
     }

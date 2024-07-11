@@ -19,6 +19,10 @@ import java.util.List;
  * 2024-06-28        gladious       최초 생성
  */
 public interface ApprovalElectronicRepository extends JpaRepository<ApprovalElectronic, Long> {
+    //인트라넷 메인 페이지 내가 올린 진행중인 기안문 수
+    @Query(value = "SELECT COUNT(*) FROM electronic_approval e JOIN approval_participant a ON e.approval_id = a.approval_id WHERE a.employee_id  = :employeeId AND a.type = '기안' AND e.status NOT IN ('T', 'C', 'R', 'H');" , nativeQuery = true)
+    Integer findByDraftCount(@Param("employeeId") Long employeeId);
+
     //인트라넷 메인 페이지 내가 올린 기안문 조회
     @Query(value = "SELECT e.* FROM electronic_approval e JOIN approval_participant a ON e.approval_id = a.approval_id WHERE a.employee_id  = :employeeId AND a.type = '기안' AND e.status != 'T' AND e.status != 'H' ORDER BY e.approval_id DESC LIMIT 5;" , nativeQuery = true)
     List<ApprovalElectronic> findByDraft(@Param("employeeId") Long employeeId);
