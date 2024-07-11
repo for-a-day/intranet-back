@@ -48,7 +48,7 @@ public class ApprovalController {
     /**
      * methodName : selectApprovalMain
      * author : YunJae Lee
-     * description :
+     * description : 전자결재 메인 조회
      *
      * @return response entity
      * @throws Exception the exception
