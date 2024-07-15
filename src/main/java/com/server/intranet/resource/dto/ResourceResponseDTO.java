@@ -11,7 +11,7 @@ public class ResourceResponseDTO {
     private Long employeeId;
     private String name;
     private String gender;
-    private Long birth;
+    private Date birth;
     private Date dateEmployment;
     private String contact;
     private String address;

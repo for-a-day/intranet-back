@@ -10,6 +10,7 @@ import java.util.Date;
 @Table(name = "EMPLOYEE")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class EmployeeEntity {
 
     //아이디
@@ -31,7 +32,7 @@ public class EmployeeEntity {
 
     //생년월일
     @Column(name = "BIRTH", nullable = false)
-    private Long birth;
+    private Date birth;
 
     //입사날짜
     @Column(name = "DATE_EMPLOYMENT", nullable = false)
