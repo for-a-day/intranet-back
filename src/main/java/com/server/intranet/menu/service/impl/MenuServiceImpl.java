@@ -1,9 +1,14 @@
 package com.server.intranet.menu.service.impl;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.server.intranet.menu.dto.MenuRequestDto;
 import com.server.intranet.menu.dto.MenuResponseDto;
@@ -20,6 +25,9 @@ public class MenuServiceImpl implements MenuService{
 		this.menuRepository = menuRepository;
 	}
 	
+    @Value("${upload.directory}")
+    private String uploadDirectory;
+	
 	// 목록
 	@Override
 	public List<MenuResponseDto> menuList() {
@@ -30,7 +38,8 @@ public class MenuServiceImpl implements MenuService{
 						menu.getMenu_price(),
 						menu.getMenu_recipe(),
 						menu.getMenu_origin_price(),
-						menu.getMenu_end()
+						menu.getMenu_end(),
+						menu.getMenu_image()
 						)).collect(Collectors.toList());
 	}
 
@@ -44,6 +53,35 @@ public class MenuServiceImpl implements MenuService{
 		menu.setMenu_recipe(dto.getMenu_recipe());
 		menu.setMenu_origin_price(dto.getMenu_origin_price());
 		menu.setMenu_end(dto.getMenu_end());
+		
+		MultipartFile file = dto.getMenu_image();
+		
+		// 파일이 없는 경우를 대비
+		if(file != null && !file.isEmpty()) {
+			
+			try {			
+			// 파일 원본이름 가져오기
+			String fileName = file.getOriginalFilename();
+			// 파일 경로 설정
+			Path uploadPath = Paths.get(uploadDirectory);
+			System.out.println("1. 파일 경로 설정");
+			
+				byte[] bytes = file.getBytes();
+				// 파일 저장
+				Path filePath = uploadPath.resolve(fileName);
+				Files.write(filePath, bytes);
+				System.out.println("2. 파일 저장");
+				// 파일 경로 설정
+				String fileUrl = fileName;
+				// 파일 경로를 엔티티에 설정
+				menu.setMenu_image(fileUrl);
+				System.out.println("3. 파일 경로 설정");
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException("File upload failed: " + e.getMessage());
+			}
+		}
+		System.out.println("4. 레포지터리 저장");
 		return menuRepository.save(menu);
 	}
 	

@@ -17,9 +17,11 @@ public class MenuResponseDto {
 	private int menu_origin_price;
 	// 메뉴단종 여부
 	private int menu_end;
+	// 메뉴 이미지
+	private String menu_image;
 	
 	public MenuResponseDto(String menu_id, String menu_name, int menu_price, String menu_recipe, int menu_origin_price,
-			int menu_end) {
+			int menu_end, String menu_image) {
 		super();
 		this.menu_id = menu_id;
 		this.menu_name = menu_name;
@@ -27,6 +29,7 @@ public class MenuResponseDto {
 		this.menu_recipe = menu_recipe;
 		this.menu_origin_price = menu_origin_price;
 		this.menu_end = menu_end;
+		this.menu_image = menu_image;
 	}
 	
 }
