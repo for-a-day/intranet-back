@@ -45,4 +45,7 @@ public class MenuEntity {
 	// 메뉴단종 여부
 	@Column(length = 5, nullable = false)    
 	private int menu_end;
+	
+	@Column(length = 250, nullable = true)   
+	private String menu_image; 
 }

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.server.intranet.menu.dto.MenuRequestDto;
 import com.server.intranet.menu.dto.MenuResponseDto;
@@ -51,9 +53,19 @@ public class MenuController {
 
 	// 등록
 	@PostMapping("/menu")
-	public ResponseEntity<Map<String, Object>> insert(@RequestBody MenuRequestDto menuRequestDto){
+	public ResponseEntity<Map<String, Object>> insert(
+			@RequestParam("menu_id") String menuId,
+            @RequestParam("menu_name") String menuName,
+            @RequestParam("menu_price") int menuPrice,
+            @RequestParam("menu_recipe") String menuRecipe,
+            @RequestParam("menu_origin_price") int menuOriginPrice,
+            @RequestParam("menu_end") int menuEnd,
+            @RequestParam(value = "menu_image", required = false) MultipartFile menuImage) {
+					
 		try {
-			MenuEntity menu = menuService.insert(menuRequestDto);
+			// MenuEntity를 생성하고 저장
+	        MenuRequestDto menuRequestDto = new MenuRequestDto(menuId, menuName, menuPrice, menuRecipe, menuOriginPrice, menuEnd, menuImage);
+	        MenuEntity menu = menuService.insert(menuRequestDto);
 			return new ResponseEntity<>(Collections.singletonMap("message", "메뉴 등록 성공"), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(Collections.singletonMap("message", "메뉴 등록 실패"), HttpStatus.INTERNAL_SERVER_ERROR);
