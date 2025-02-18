@@ -12,8 +12,10 @@
 <img src="https://github.com/user-attachments/assets/1b67fd3e-e3c3-44f9-898b-647b1deed0cb" >
 
 
-### 🎞 시연영상 👇
-- 
+<br>
+
+### PDF
+[프렌차이즈(TO & POS)와 인트라넷기반의 그룹웨어 프로젝트.pdf](https://github.com/user-attachments/files/16531140/default.pdf)
  
 <br>
 
